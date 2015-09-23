@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<HTML>
+<HEAD>
+<TITLE>Example</TITLE>
+""
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script language="javascript" src="src/osmanager.js"></script>
+
+</HEAD>
+
+<BODY>
+
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+  <div class="container">
+		
+	      <p class="navbar-text">Clock counter <span class="label label-primary lbl-big" id="timer">0</span>	</p>
+	      <p class="navbar-text">Quantum <span class="label label-primary lbl-big" id="quantumNumber">0</span>	</p>
+		<div class="btn-group" role="group" aria-label="...">
+  			<button type="button" class="btn btn-default navbar-btn" onclick="playFunction()">
+  				<span class="glyphicon glyphicon-play"></span>Play</button>
+  			<button type="button" class="btn btn-default navbar-btn" onclick="pauseFunction()">
+  				<span class="glyphicon glyphicon-pause"></span>Pause</button>
+  			<button type="button" class="btn btn-default navbar-btn" onclick="stopFunction()">
+  				<span class="glyphicon glyphicon-stop"></span>Stop</button>
+		</div>      
+	<button type="button" class="btn btn-default navbar-btn navbar-right" aria-label="Right Align">
+  		<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Help
+	</button>
+	</div>
+</nav>
+	<br><br> <!--Please Forgive mee -->
+	<h1> Example</h1>
+<!-- First set of Processes states -->
+<div class="row col-md-12">
+	<div class="col-md-3">
+		<table class="table table-bordered  table-striped">
+			<tr>
+			<th> New (Hold) </th>
+			</tr>
+		</table>
+	</div>
+
+	<div class="col-md-3">
+		<br>
+		<table class="table table-bordered  table-striped">
+			<tr>
+			<th> Ready </th>
+			</tr>
+		</table>
+	</div>
+
+	<div class="col-md-3"> 
+		<br> <br>
+		<table class="table table-bordered  table-striped">
+			<tr>
+			<th> Running </th>
+			</tr>
+		</table>
+	</div>
+
+	<div class="col-md-3">
+		<table class="table table-bordered  table-striped">
+			<tr>
+			<th> Finished</th>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<!--  Second set of Processes states -->
+<div class="row col-md-12">
+	<div class= "col-md-4">
+		<table class="table table-bordered  table-striped">
+			<tr>
+			<th> Waiting (I/O)</th>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<!--  -->
+<div class="row col-md-12">
+
+</div>
+
+<div class="row col-md-12">
+	<div class="col-md-4">
+		<h2> Parameters </h2>
+		<p> <h3>Probability to generate a process </h3></p>
+		<p> <h4>Quantum Value </h4></p>
+		<p> <h5>Speedness</h5></p>
+		<p> Algorithm </p>
+	</div>
+	<div class="col-md-8">
+	<h2> PCB </h2>
+	<table class="table table-bordered  table-striped">
+		<tr>
+		<th> ID </th>
+		<th> Arrival </th>
+		<th> Total Time</th>
+		<th> Time Left </th>
+		<th> Resources </th>
+		<th> IO Time </th>
+		<th> Finished </th>
+		<th> Status </th>
+		</tr>
+	</table>
+	</div>
+</div>
+
+
+<!-- Neccesary -->
+<div class="row col-md-12">
+Powered by Linux
+</div>
+
+</BODY>
+</HTML>
