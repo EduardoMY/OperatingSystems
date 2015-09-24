@@ -37,7 +37,7 @@
 <!-- First set of Processes states -->
 <div class="row col-md-12">
 	<div class="col-md-3">
-		<table class="table table-bordered  table-striped">
+		<table class="table table-bordered  table-striped" id="new">
 			<tr>
 			<th> New (Hold) </th>
 			</tr>
@@ -46,7 +46,7 @@
 
 	<div class="col-md-3">
 		<br>
-		<table class="table table-bordered  table-striped">
+		<table class="table table-bordered  table-striped" id="ready">
 			<tr>
 			<th> Ready </th>
 			</tr>
@@ -55,7 +55,7 @@
 
 	<div class="col-md-3"> 
 		<br> <br>
-		<table class="table table-bordered  table-striped">
+		<table class="table table-bordered  table-striped" id="running">
 			<tr>
 			<th> Running </th>
 			</tr>
@@ -63,7 +63,7 @@
 	</div>
 
 	<div class="col-md-3">
-		<table class="table table-bordered  table-striped">
+		<table class="table table-bordered  table-striped" id="finished">
 			<tr>
 			<th> Finished</th>
 			</tr>
@@ -74,7 +74,7 @@
 <!--  Second set of Processes states -->
 <div class="row col-md-12">
 	<div class= "col-md-4">
-		<table class="table table-bordered  table-striped">
+		<table class="table table-bordered  table-striped" id="waiting">
 			<tr>
 			<th> Waiting (I/O)</th>
 			</tr>
@@ -90,14 +90,25 @@
 <div class="row col-md-12">
 	<div class="col-md-4">
 		<h2> Parameters </h2>
-		<p> <h3>Probability to generate a process </h3></p>
-		<p> <h4>Quantum Value </h4></p>
-		<p> <h5>Speedness</h5></p>
-		<p> Algorithm </p>
+		<br>
+		<p> <h4>Probability to generate a process  </h4> <input type="number" id="probability" class="form-control" value="0" aria-describedby="basic-addon1" min="0" max="100" step="1"></p>
+		<p> <h4> Quantum Value </h4> <input type="number" id="quantum" class="form-control" value="0" aria-describedby="basic-addon1" min="0" max="100" step="1"></p>
+		<p><h4> IO Time </h4>  <input type="number" id="ioTime" class="form-control" value="0" aria-describedby="basic-addon1" min="0" max="100" step="1"></p>
+		<p> <h4> Speedness </h4> </p>
+			<div class="btn-group" role="group" aria-label="...">
+			  <button type="button" class="btn btn-default">Slow</button>
+			  <button type="button" class="btn btn-default">Normal</button>
+			  <button type="button" class="btn btn-default">Fast</button>
+			</div>
+		<p> <h4> Algorithm </h4> </p>
+			<div class="btn-group" role="group" aria-label="...">
+			  <button type="button" class="btn btn-default">Round-Robin</button>
+			  <button type="button" class="btn btn-default">First Come, First Served</button>
+			</div>
 	</div>
 	<div class="col-md-8">
 	<h2> PCB </h2>
-	<table class="table table-bordered  table-striped">
+	<table class="table table-bordered  table-striped" id="pcb">
 		<tr>
 		<th> ID </th>
 		<th> Arrival </th>
@@ -115,6 +126,7 @@
 
 <!-- Neccesary -->
 <div class="row col-md-12">
+<br><br>
 Powered by Linux
 </div>
 
