@@ -7,7 +7,6 @@
 	var algorithm=0; //1=round_robin, 2=fcfs
 	var fastValues=[100,1500,3000]; //Fast, normal, slow times intervals
 	window.alert(11); //Juts for debugging.
-	window.alert(isNaN('ae'));
 	var myVarTime; //Stores the timers
 
 	//change
