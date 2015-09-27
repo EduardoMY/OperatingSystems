@@ -91,19 +91,19 @@
 	<div class="col-md-4">
 		<h2> Parameters </h2>
 		<br>
-		<p> <h4>Probability to generate a process  </h4> <input type="number" id="probability" class="form-control" value="0" aria-describedby="basic-addon1" min="0" max="100" step="1"></p>
-		<p> <h4> Quantum Value </h4> <input type="number" id="quantum" class="form-control" value="0" aria-describedby="basic-addon1" min="0" max="100" step="1"></p>
-		<p><h4> IO Time </h4>  <input type="number" id="ioTime" class="form-control" value="0" aria-describedby="basic-addon1" min="0" max="100" step="1"></p>
+		<p> <h4>Probability to generate a process  </h4> <input type="text" id="probability" class="form-control" value="0" aria-describedby="basic-addon1"></p>
+		<p> <h4> Quantum Value </h4> <input type="text" id="quantum" class="form-control" value="0" aria-describedby="basic-addon1"></p>
+		<p><h4> IO Time </h4>  <input type="text" id="ioTime" class="form-control" value="0" aria-describedby="basic-addon1"></p>
 		<p> <h4> Speedness </h4> </p>
 			<div class="btn-group" role="group" aria-label="...">
-			  <button type="button" class="btn btn-default">Slow</button>
-			  <button type="button" class="btn btn-default">Normal</button>
-			  <button type="button" class="btn btn-default">Fast</button>
+			  <button type="button" class="btn btn-default" onclick="slow()" id="slow">Slow</button>
+			  <button type="button" class="btn btn-default" onclick="normal()" id="normal">Normal</button>
+			  <button type="button" class="btn btn-default" onclick="fast()" id="fast">Fast</button>
 			</div>
 		<p> <h4> Algorithm </h4> </p>
 			<div class="btn-group" role="group" aria-label="...">
-			  <button type="button" class="btn btn-default">Round-Robin</button>
-			  <button type="button" class="btn btn-default">First Come, First Served</button>
+			  <button type="button" class="btn btn-default" onclick="roundRobinButton()" id="round_robin">Round-Robin</button>
+			  <button type="button" class="btn btn-default" onClick="fcfsButton()" id="fcfs">First Come, First Served</button>
 			</div>
 	</div>
 	<div class="col-md-8">

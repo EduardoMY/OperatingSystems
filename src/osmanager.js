@@ -1,22 +1,77 @@
-	var time=0;
-	var processAmount=0;
+	var time=0; //Clock counter
+	var probability=0; //The probability to create a process
 	var mode=0; //1=play, 2=pause, 3=stop
-	var fast=[100,1500,3000];
-	window.alert(11);
+	var fastness=0; //1=fast, 2=normal, 3=slow
+	var quantum=0; //The quantum of the machine
+	var ioTime=0;
+	var algorithm=0; //1=round_robin, 2=fcfs
+	var fastValues=[100,1500,3000]; //Fast, normal, slow times intervals
+	window.alert(11); //Juts for debugging.
+	window.alert(isNaN('ae'));
+	var myVarTime; //Stores the timers
 
-var myVar=setInterval(function () {myTimer()}, fast[0]);
+	//change
+
+
 
 function myTimer() {
-	if(mode==0 || mode==2 || mode==3)
+	if(mode===0 || mode===2 || mode===3)
 		return;
-	
-	if(!validateValues())
-		simulation();
-	else 
-		mode=0;
+	simulation();
 }
 
 function validateValues(){
+	var isCorrect, posProbability, posQuantum, posIOTime;
+	
+	//
+	posProbability=document.getElementById("probability").value;
+	if(isNaN(posProbability) && isInt(posProbability) && posProbability>=0 && posProbability<=100){
+		probability=posProbability;
+		isCorrect=true;
+	}
+	else{
+		window.alert("Probability");
+		isCorrect=false;
+	}
+	//
+	posQuantum=document.getElementById("quantum").value;
+	if(!isNaN(posQuantum) && isInt(posQuantum) && posQuantum>=0 && posQuantum<=100){
+		quantum=posQuantum;
+		document.getElementById("quantumNumber").innerHTML=quantum;	
+	}
+	else {
+		window.alert("Quantum");
+		isCorrect=false;
+	}
+
+	//
+	posIOTime=document.getElementById("ioTime").value;
+	if(!isNaN(posIOTime) && isInt(posIOTime) && posIOTime>=0 && posIOTime<=100){
+		ioTime=posIOTime;
+	}
+	else {
+		window.alert("IOTime");
+		isCorrect=false;
+	}
+
+	//
+	if(fastness===0){
+		window.alert("No speed");
+		isCorrect=false;
+	}
+	
+	//
+	if(algorithm===0){
+		window.alert("No algorithm");
+		isCorrect=false;
+	}
+
+	return isCorrect;
+}
+
+function isInt(number){
+	if(number % 1===0)
+		return true;
 	return false;
 }
 
@@ -33,7 +88,7 @@ function addingRows(){
 }
 
 function stopFunction(){
-	if(mode==3)
+	if(mode===3)
 		return;
 	time=0;
 	processAmount=0;
@@ -64,13 +119,53 @@ function clearSingleTable(table){
 }
 
 function pauseFunction(){
-	if(mode==2)
+	if(mode===2)
 		return;
 	mode=2;
 }
 
 function playFunction(){
-	mode=1;
+	if(mode!==1){
+		if (validateValues())
+			mode=1;
+	}
+}
+
+function fast() {
+	if(mode!==1) {
+		fastness=1;
+		window.clearInterval(myVarTime);
+		myVartime = setInterval(function () {myTimer()}, fastValues[fastness-1]);
+	}
+}
+
+function normal(){
+	if(mode!==1){
+		fastness=2;
+		window.clearInterval(myVarTime);
+		myVartime = setInterval(function () {myTimer()}, fastValues[fastness-1]);
+	}
+
+}
+
+function slow(){
+	if(mode!==1){
+		fastness=3;
+		window.clearInterval(myVarTime);
+		myVartime = setInterval(function () {myTimer()}, fastValues[fastness-1]);
+	}
+}
+
+function roundRobinButton(){
+	if(mode!==1){
+		algorithm=1;
+	}
+}
+
+function fcfsButton(){
+	if(mode!==1){
+		algorithm=2;
+	}
 }
 
 function Process(id){
@@ -79,8 +174,8 @@ function Process(id){
 
 function ProcessesList(maxProcessesList){
 	this.maxProcessesList=maxProcessesList;
-
 }
+
 function PCB(){
 	this.Process=[]
 }
