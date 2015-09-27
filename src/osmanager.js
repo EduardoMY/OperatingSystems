@@ -112,9 +112,9 @@ function clearAllTables(){
 }
 
 function clearSingleTable(table){
-	for(var rowNumber=1; rowNumber<table.rows.length; rowNumber){
+	for(var rowNumber=1; rowNumber<table.rows.length; rowNumber)
 		table.deleteRow(1);
-	}
+	
 }
 
 function pauseFunction(){
@@ -167,15 +167,15 @@ function fcfsButton(){
 	}
 }
 
-function Process(id, ioTime, ){
+function Process(id, ioTime ){
 	this.id=id;
 
-};
+}
 
 function ProcessesList(maxProcessesList){
 	this.maxProcessesList=maxProcessesList;
-};
+}
 
 function PCB(){
 	this.Process=[]
-};
+}
