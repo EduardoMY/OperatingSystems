@@ -167,14 +167,15 @@ function fcfsButton(){
 	}
 }
 
-function Process(id){
+function Process(id, ioTime, ){
 	this.id=id;
-}
+
+};
 
 function ProcessesList(maxProcessesList){
 	this.maxProcessesList=maxProcessesList;
-}
+};
 
 function PCB(){
 	this.Process=[]
-}
+};

@@ -2,38 +2,23 @@
 <HTML>
 <HEAD>
 <TITLE>Example</TITLE>
-""
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
 <!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script language="javascript" src="src/osmanager.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script language="javascript" src="src/osmanager.js"></script>
 </HEAD>
 
 <BODY>
-				<!-- Modal -->
-			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-			  <div class="modal-dialog" role="document">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-			      </div>
-			      <div class="modal-body">
-			        Holaasasasasas
-			        asasa
-			        
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			        <button type="button" class="btn btn-primary">Save changes</button>
-			      </div>
-			    </div>
-			  </div>
-			</div>
-			
+<div class="container">
+
 <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
   <div class="container">
 		
@@ -47,13 +32,36 @@
   			<button type="button" class="btn btn-default navbar-btn" onclick="stopFunction()">
   				<span class="glyphicon glyphicon-stop"></span>Stop</button>
 		</div>      
-	<button type="button" class="btn btn-default navbar-btn navbar-right" aria-label="Right Align" data-toggle="modal" data-target="#myModal">
-  		<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Help
+	<button type="button" class="btn btn-default navbar-btn navbar-right" aria-label="Right Align" data-toggle="modal" data-target="#help">
+  		<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>Help
 	</button>
 	</div>
 </nav>
+<!-- End of NavBar -->
+
+ <!-- Modal -->
+  <div class="modal fade" id="help" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+    </div>
+
 	<br><br> <!--Please Forgive mee -->
-	<h1> Example</h1>
+	<h1> Example </h1>
 <!-- First set of Processes states -->
 <div class="row col-md-12">
 	<div class="col-md-3">
@@ -148,6 +156,7 @@
 <div class="row col-md-12">
 <br><br>
 Powered by Linux
+</div>
 </div>
 
 </BODY>
