@@ -1,15 +1,14 @@
 	var time=0; //Clock counter
+	var processesNumber=0; //number of processes been created
 	var probability=0; //The probability to create a process
 	var mode=0; //1=play, 2=pause, 3=stop
 	var fastness=0; //1=fast, 2=normal, 3=slow
 	var quantum=0; //The quantum of the machine
-	var ioTime=0;
-	var algorithm=0; //1=round_robin, 2=fcfs
+	var ioTime=0; //
+	var algorithm=0; //1=round robin, 2=fcfs
 	var fastValues=[100,1500,3000]; //Fast, normal, slow times intervals
 	window.alert(11); //Juts for debugging.
 	var myVarTime; //Stores the timers
-
-	//change
 
 
 
@@ -24,7 +23,7 @@ function validateValues(){
 	
 	//
 	posProbability=document.getElementById("probability").value;
-	if(isNaN(posProbability) && isInt(posProbability) && posProbability>=0 && posProbability<=100){
+	if(!isNaN(posProbability) && isInt(posProbability) && posProbability>=0 && posProbability<=100){
 		probability=posProbability;
 		isCorrect=true;
 	}
@@ -75,22 +74,47 @@ function isInt(number){
 }
 
 function simulation(){
+	var newProcess=null;
+	var actualProbability=Math.floor(Math.random() * 101);
+	
 	time++;
 	document.getElementById("timer").innerHTML=time;
-	addingRows();
+
+	if(actualProbability<=probability){
+		processesNumber++;
+		newProcess = new Process(processesNumber, 0);
+	}
+	if(algorithm===1)
+		roundRobin(newProcess);
+	else
+		fcfs(newProcess); 
 }
 
-function addingRows(){
-	var table=document.getElementById("finished");
+function roundRobin(newProcess){
+		if(newProcess!==null)
+			addRows("finished", newProcess);
+}
+
+function fcfs(newProcess){
+
+}
+
+function addRows(table, process){
+	var table=document.getElementById(table);
 	var newRow=table.insertRow(1);
-	newRow.insertCell(0).innerHTML="P0"+time;
+	newRow.insertCell(0).innerHTML="P0"+process.id;
+}
+function addRowsEnd(table, process){
+	var table=document.getElementById(table);
+	var newRow=table.insertRow(-1);
+	newRow.insertCell(0).innerHTML="P0"+process.id;	
 }
 
 function stopFunction(){
 	if(mode===3)
 		return;
 	time=0;
-	processAmount=0;
+	processesNumber=0;
 	document.getElementById("timer").innerHTML=time;
 	clearAllTables();
 	mode=3;
@@ -112,7 +136,7 @@ function clearAllTables(){
 }
 
 function clearSingleTable(table){
-	for(var rowNumber=1; rowNumber<table.rows.length; rowNumber)
+	for(var rowNumber=1; rowNumber<table.rows.length; )
 		table.deleteRow(1);
 	
 }
@@ -167,15 +191,64 @@ function fcfsButton(){
 	}
 }
 
-function Process(id, ioTime ){
+function Process(id, cpuTime){
+	this.processedTime=0;
+	this.cpuTime=cpuTime;
 	this.id=id;
+	this.ioTime=0;
+	this.waitingTime=0;
 
+	this.TotalTime = function(){
+		return processedTime + ioTime + waitingTime;
+	};
+	this.isDone=function(){
+		return processedTime === processedTime; 
+	};
 }
 
 function ProcessesList(maxProcessesList){
 	this.maxProcessesList=maxProcessesList;
+	this.processes=[];
+	this.Push=function(process){
+		if(this.isFull()){
+			processes.push(process);
+			return true;
+		}
+		return false;
+	};
+
+	this.Top=function(){
+		if(processes.length!==0)
+			return processes[0];
+		else 
+			return null;
+	};
+	this.Remove= function(){
+		if(processes.length!==0)
+			return processes.shift();
+		else 
+			return null;
+	};
+	this.isFull= function(){
+		return processes.length === maxProcessesList;
+	};
 }
 
 function PCB(){
-	this.Process=[]
+
+	this.processes=[];	
+
+	this.Add= function(process){
+		processes.push(process);
+	};
+
+	this.Actions= function(index){
+		var actions=[];
+		var actualProcess=null;
+		if(index < processes.length){
+			actualProcess=processes[index];
+			actions.push(actualProcess.id);
+		}
+		return actions;
+	};
 }
