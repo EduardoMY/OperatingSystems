@@ -156,26 +156,30 @@ function playFunction(){
 
 function fast() {
 	if(mode!==1) {
+		window.alert("fast");
 		fastness=1;
 		window.clearInterval(myVarTime);
-		myVartime = setInterval(function () {myTimer()}, fastValues[fastness-1]);
+		myVarTime = setInterval(function () {myTimer()}, fastValues[fastness-1]);
 	}
 }
 
 function normal(){
 	if(mode!==1){
+
+		window.alert("normal");
 		fastness=2;
 		window.clearInterval(myVarTime);
-		myVartime = setInterval(function () {myTimer()}, fastValues[fastness-1]);
+		myVarTime = setInterval(function () {myTimer()}, fastValues[fastness-1]);
 	}
 
 }
 
 function slow(){
 	if(mode!==1){
+		window.alert("slow");
 		fastness=3;
 		window.clearInterval(myVarTime);
-		myVartime = setInterval(function () {myTimer()}, fastValues[fastness-1]);
+		myVarTime = setInterval(function () {myTimer()}, fastValues[fastness-1]);
 	}
 }
 
