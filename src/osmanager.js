@@ -15,13 +15,13 @@
 	var algorithm=0; //1=round robin, 2=fcfs
 	var fastValues=[100,1500,3000]; //Fast, normal, slow times intervals
 	window.alert(11); //Juts for debugging.
-	var myVarTime; //Stores the timers
-	var newList;
-	var readyList;
-	var runningList;
-	var waitingList;
-	var ioList;
-	var pcb;
+	var myVarTime=null; //Stores the timers
+	var newList=null;
+	var readyList=null;
+	var runningList=null;
+	var waitingList=null;
+	var ioList=null;
+	var pcb=null;
 
 
 class Process{
@@ -57,8 +57,8 @@ class Process{
 		data.push(this.cpuTime); //CPU Ussage
 		data.push(this.ioTimeNedded); //IO TIme nedded
 		data.push(this.ioTime); //IO Time Ussage
-		data.push(TotalTime() + this.arrival); // Time the process ended
-		data.push(TotalTime()); // Time in the SYstem
+		data.push(this.TotalTime() + this.arrival); // Time the process ended
+		data.push(this.TotalTime()); // Time in the SYstem
 		return data;
 	}
 }
@@ -152,22 +152,23 @@ function myTimer() {
 }
 
 function validateValues(){
-	var isCorrect, posProbability, posQuantum, posIOTime;
+	var isCorrect, posProbability, posQuantum, posIOTime, posWaitingSize, posNewSize, posReadySize;
 	
-	//
+	//Evaluate the probability, should be an integer number between 0 and 100
 	posProbability=document.getElementById("probability").value;
 	if(!Number.isNaN(posProbability) && Number.isInteger(Number(posProbability)) && posProbability>=0 && posProbability<=100){
-		probability=posProbability;
+		probability=Number(posProbability);
 		isCorrect=true;
 	}
 	else{
 		window.alert("Probability");
 		isCorrect=false;
 	}
-	//
+
+	// Evaluate the quantum, should be an integer bigger than 1
 	posQuantum=document.getElementById("quantum").value;
-	if(!Number.isNaN(posQuantum) && Number.isInteger(Number(posQuantum)) && posQuantum>=0 && posQuantum<=100){
-		quantum=posQuantum;
+	if(!Number.isNaN(posQuantum) && Number.isInteger(Number(posQuantum)) && posQuantum>0 && posQuantum<=100){
+		quantum=Number(posQuantum);
 		document.getElementById("quantumNumber").innerHTML=quantum;	
 	}
 	else {
@@ -175,13 +176,43 @@ function validateValues(){
 		isCorrect=false;
 	}
 
-	//
+	// Evaluate the IOtime, should be an integer bigger than 0
 	posIOTime=document.getElementById("ioTime").value;
 	if(!Number.isNaN(posIOTime) && Number.isInteger(Number(posIOTime)) && posIOTime>=0 && posIOTime<=100){
-		ioTime=posIOTime;
+		ioTime=Number(posIOTime);
 	}
 	else {
 		window.alert("IOTime");
+		isCorrect=false;
+	}
+
+	// Evaluate the Size
+	posNewSize=document.getElementById("newsize").value;
+	if(!Number.isNaN(posNewSize) && Number.isInteger(Number(posNewSize)) && posNewSize>=0 && posNewSize<=100){
+		newSize=Number(posNewSize);
+	}
+	else {
+		window.alert("New Size");
+		isCorrect=false;
+	}
+
+	//
+	posReadySize=document.getElementById("readysize").value;
+	if(!Number.isNaN(posReadySize) && Number.isInteger(Number(posReadySize)) && posReadySize>=0 && posReadySize<=100){
+		readySize=Number(posReadySize);
+	}
+	else {
+		window.alert("Ready Size");
+		isCorrect=false;
+	}
+
+	//
+	posWaitingSize=document.getElementById("waitingsize").value;
+	if(!Number.isNaN(posWaitingSize) && Number.isInteger(Number(posWaitingSize)) && posWaitingSize>=0 && posWaitingSize<=100){
+		waitingSize=Number(posWaitingSize);
+	}
+	else {
+		window.alert("Waiting Size");
 		isCorrect=false;
 	}
 
@@ -272,6 +303,7 @@ function roundRobin(newProcess){
 			newList.Push(newProcess);
 			addRowsEnd("new", newProcess);
 			pcb.Add(newProcess);
+			newRowPCB(newProcess);
 		}
 
 
@@ -296,6 +328,35 @@ function updateLists(){
 
 function updatePCB(){
 
+var pcbRows=document.getElementById("pcb").rows;
+var data;
+var id;
+var specificRow;
+
+for (var i = pcb.length - 1; i >= 0; i--) {
+	data=pcb.Actions(i);
+    id=data[0];
+    specificRow=pcbRows[id].cells
+    modifyPCBRow(specificRow, data);
+};
+
+}
+
+
+function modifyPCBRow(cells, actions){
+	for (var i = actions.length - 1; i >= 0; i--) {
+		cells[i].innerHTML=actions[i];
+	};
+}
+
+function newRowPCB(process){
+	var actions=process.Print();
+	var pcbTable=document.getElementById("pcb");
+	var newRow=pcbTable.insertRow(1);
+
+	for (var i = 0; i < actions.length; i++) {
+		newRow.insertCell(i).innerHTML=actions[i];
+	};
 }
 
 function fcfs(newProcess){
@@ -329,7 +390,8 @@ function stopFunction(){
 		return;
 	time=0;
 	processesNumber=0;
-	document.getElementById("timer").innerHTML=time;
+	document.getElementById("timer").innerHTML=0;
+	document.getElementById("quantumNumber").innerHTML=0;
 	clearAllTables();
 	newList=null;
 	readyList=null;
@@ -374,17 +436,23 @@ function pauseFunction(){
 function playFunction(){
 	if(mode!==1){
 		if (validateValues()){
-			
-		if(mode===0 || mode===3){ //Creating the objects
-			pcb = new PCB();
-			newList = new ProcessesList(20);
-			readyList = new ProcessesList(20);
-			waitingList = new ProcessesList(20);
-			ioList = new ProcessesList(1);
-			runningList = new ProcessesList(1);
-		}
-			myVarTime = setInterval(function () {myTimer()}, fastValues[fastness-1]);
-			mode=1;
+				
+			if(pcb===null){ //Creating the objects
+				pcb = new PCB();
+				newList = new ProcessesList(newSize);
+				readyList = new ProcessesList(readySize);
+				waitingList = new ProcessesList(waitingSize);
+				ioList = new ProcessesList(1);
+				runningList = new ProcessesList(1);
+			}
+			else{
+					newList.changeSize(newSize);
+					readyList.changeSize(readySize);
+					waitingList.changeSize(waitingSize);	
+				
+			}
+				myVarTime = setInterval(function () {myTimer()}, fastValues[fastness-1]);
+				mode=1;
 		}
 	}
 }
