@@ -1,10 +1,17 @@
+/*Dudas
+ -> Si un proceso se crea pero no hay lugar en hold?
+ -> Se puede cambiar la mecanica del proyecto
+ -> 
+*/	
 	var time=0; //Clock counter
-	var processesNumber=0; //number of processes been created
+	var processesNumber=1; //number of processes been created
 	var probability=0; //The probability to create a process
 	var mode=0; //1=play, 2=pause, 3=stop
 	var fastness=0; //1=fast, 2=normal, 3=slow
 	var quantum=0; //The quantum of the machine
-	var ioTime=0; //
+	var averageIOTime=0; //
+	var averageCPUTime=0; 
+	var newSize=0, readySize=0, waitingSize=0;
 	var algorithm=0; //1=round robin, 2=fcfs
 	var fastValues=[100,1500,3000]; //Fast, normal, slow times intervals
 	window.alert(11); //Juts for debugging.
@@ -13,17 +20,24 @@
 	var readyList;
 	var runningList;
 	var waitingList;
+	var ioList;
 	var pcb;
 
 
 class Process{
-	constructor(id, cpuTime){
-	this.cpuCounter=0;
-	this.processedTime=0;
-	this.cpuTime=cpuTime;
+	constructor(id, arrival, cpuTime, ioTime){
+	
 	this.id=id;
+	this.arrival=arrival;
+
+	this.cpuCounter=0;
 	this.ioTime=0;
+	this.cpuTime=0;
+
 	this.waitingTime=0;
+
+	this.cpuTimeNedded=cpuTime;
+	this.ioTimeNedded=ioTime;
 	}
 	
 	TotalTime(){
@@ -31,16 +45,31 @@ class Process{
 	}
 	
 	isDone (){
-		return this.processedTime === this.processedTime; 
+		return this.cpuTime === this.cpuTimeNedded; 
+	}
+
+	Print(){ //only gives an array with the data
+		//format: ID|Arrival|CPU nedded| CPU Ussage| IO TIme | TIme of IO| Finish Time | Time in the System
+		var data=[];
+		data.push(this.id); //ID
+		data.push(this.arrival); //Arival
+		data.push(this.cpuTimeNedded); //CPU nedded
+		data.push(this.cpuTime); //CPU Ussage
+		data.push(this.ioTimeNedded); //IO TIme nedded
+		data.push(this.ioTime); //IO Time Ussage
+		data.push(TotalTime() + this.arrival); // Time the process ended
+		data.push(TotalTime()); // Time in the SYstem
+		return data;
 	}
 }
 
 class ProcessesList {
 
-	constructor (maxProcessesList){
+	constructor (maxProcessesList) {
 	this.maxProcessesList=maxProcessesList;
 	this.processes=[];
-}
+	}
+
 	Push(process){
 		if(true){
 			this.processes.push(process);
@@ -56,15 +85,27 @@ class ProcessesList {
 			return null;
 	}
 	
+	UpdateProcess(variable){
+		for (var i = this.processes.length - 1; i >= 0; i--) {
+			(this.processes[i])[variable]++;
+		};
+	}
+
 	Remove(){
 		if(this.processes.length!==0)
 			return this.processes.shift();
 		else 
 			return null;
 	}
+
 	isFull(){
-		return this.maxProcessesList===this.processes.length;
+		return this.maxProcessesList<=this.processes.length;
 	}
+
+	changeSize(changedSize){
+		this.maxProcessesList=changedSize;
+	}
+
 	isEmpty(){
 		return this.processes.length===0;
 	}
@@ -75,23 +116,29 @@ class ProcessesList {
 
 class PCB {
 	constructor(){
-		this.processes=[];	
+		this.processes=[];
+		this.length=0;
 	}
 
 	Add(process){
 		this.processes.push(process);
+		this.length++;
 	}
 	
-	Purge(process){
-		//processes.indexOf(processes);
+	Remove(process){
+		var position=this.processes.indexOf(process);
+		if(position!==-1){
+			this.processes.splice(position, 1);
+			this.length--;
+		}
 	}
 
 	Actions(index){
 		var actions=[];
 		var actualProcess=null;
-		if(index < this.processes.length){
+		if(index < this.length){
 			actualProcess=this.processes[index];
-			actions.push(actualProcess.id);
+			actions=actualProcess.Print();
 		}
 		return actions;
 	}
@@ -153,16 +200,25 @@ function validateValues(){
 	return isCorrect;
 }
 
+function getQuantum(){
+	return 10;
+}
+
+function getIOTime(){
+
+}
+
 function simulation(){
 	var newProcess=null;
 	var actualProbability=Math.floor(Math.random() * 101);
-	
+	var processIO=0;
+	var processQuantum=getQuantum();
+
 	time++;
 	document.getElementById("timer").innerHTML=time;
 
 	if(actualProbability<=probability){
-		processesNumber++;
-		newProcess = new Process(processesNumber, 0);
+		newProcess = new Process(processesNumber, time, processQuantum, processIO);
 	}
 	if(algorithm===1)
 		roundRobin(newProcess);
@@ -179,13 +235,16 @@ function roundRobin(newProcess){
 		//window.alert("AQui");
 
 		//from running to done
-		if(runningList.isFull()){
+		if(!runningList.isEmpty() && runningList.Top().isDone()){
 			dProcess=runningList.Remove();
 			deleteFirstRow("running");
 			addRowsEnd("finished", dProcess);
 		}
 
-		//from running to  ...
+		//if(runningList.isFull())
+		//	window.alert(runningList.Top().cpuTime);
+		//from running to  ... ready
+
 
 		//from ready to running
 		if(!readyList.isEmpty() && !runningList.isFull()){
@@ -195,6 +254,10 @@ function roundRobin(newProcess){
 			addRowsEnd("running", rProcess);
 		}
 
+		//from waiting to IO
+ 
+		//from 
+
 		//from new to ready
 		if(!readyList.isFull() && !newList.isEmpty()){
 			nProcess=newList.Remove();
@@ -202,20 +265,37 @@ function roundRobin(newProcess){
 			deleteFirstRow("new");
 			addRowsEnd("ready", nProcess);
 		}
-		//window.alert("Hola");
 
 		//Adding a new Process... if able.
 		if(newProcess!=null && !newList.isFull()){
+			processesNumber++;
 			newList.Push(newProcess);
 			addRowsEnd("new", newProcess);
+			pcb.Add(newProcess);
 		}
 
+
+		//EveryList Adds one
+		updateLists();
+		
 		//At the end, update pcb
 		updatePCB();
+		
+		if(dProcess!==null)
+			pcb.Remove(dProcess)
+}
+
+function updateLists(){
+	newList.UpdateProcess("waitingTime");
+	readyList.UpdateProcess("waitingTime");
+	runningList.UpdateProcess("cpuTime");
+	runningList.UpdateProcess("cpuCounter");
+	waitingList.UpdateProcess("waitingTime");
+	ioList.UpdateProcess("ioTime");
 }
 
 function updatePCB(){
-	
+
 }
 
 function fcfs(newProcess){
@@ -249,9 +329,14 @@ function stopFunction(){
 		return;
 	time=0;
 	processesNumber=0;
-
 	document.getElementById("timer").innerHTML=time;
 	clearAllTables();
+	newList=null;
+	readyList=null;
+	runningList=null;
+	waitingList=null;
+	ioList=null;
+	pcb=null;
 	window.clearInterval(myVarTime);
 	mode=3;
 }
@@ -262,12 +347,14 @@ function clearAllTables(){
 	var runningTable=document.getElementById("running");
 	var finishedTable=document.getElementById("finished");
 	var waitingTable=document.getElementById("waiting");
+	var ioTable=document.getElementById("io");
 	var pcbTable=document.getElementById("pcb");
 	clearSingleTable(newTable);
 	clearSingleTable(readyTable);
 	clearSingleTable(runningTable);
 	clearSingleTable(finishedTable);
 	clearSingleTable(waitingTable);
+	clearSingleTable(ioTable);
 	clearSingleTable(pcbTable);
 }
 
@@ -281,6 +368,7 @@ function pauseFunction(){
 	if(mode===2)
 		return;
 	mode=2;
+	window.clearInterval(myVarTime);
 }
 
 function playFunction(){
@@ -292,6 +380,7 @@ function playFunction(){
 			newList = new ProcessesList(20);
 			readyList = new ProcessesList(20);
 			waitingList = new ProcessesList(20);
+			ioList = new ProcessesList(1);
 			runningList = new ProcessesList(1);
 		}
 			myVarTime = setInterval(function () {myTimer()}, fastValues[fastness-1]);
@@ -303,17 +392,19 @@ function playFunction(){
 function fast() {
 	if(mode!==1)
 		fastness=1;
+	window.alert("fast");
 }
 
 function normal(){
 	if(mode!==1)
 		fastness=2;
-
+	window.alert("Normal");
 }
 
 function slow(){
 	if(mode!==1)
 		fastness=3;
+	window.alert("slow");
 }
 
 function roundRobinButton(){

@@ -106,9 +106,16 @@
 	<div class= "col-md-4">
 		<table class="table table-bordered  table-striped" id="waiting">
 			<tr>
-			<th> Waiting (I/O)</th>
+			<th> Waiting </th>
 			</tr>
 		</table>
+	</div>
+	<div class="col-md-3 col-md-offset-2">
+	<table class="table table-bordered  table-striped" id="io">
+		<tr>
+		<th> IO </th>
+		</tr>
+	</table>
 	</div>
 </div>
 
@@ -121,9 +128,14 @@
 	<div class="col-md-4">
 		<h2> Parameters </h2>
 		<br>
-		<p> <h4>Probability to generate a process  </h4> <input type="text" id="probability" class="form-control" value="0" aria-describedby="basic-addon1"></p>
-		<p> <h4> Quantum Value </h4> <input type="text" id="quantum" class="form-control" value="0" aria-describedby="basic-addon1"></p>
-		<p><h4> IO Time </h4>  <input type="text" id="ioTime" class="form-control" value="0" aria-describedby="basic-addon1"></p>
+		<p> <h4>Probability to generate a process  </h4> <input type="text" id="probability" class="form-control" value="50" aria-describedby="basic-addon1"></p>
+		<p> <h4> Quantum Value </h4> <input type="text" id="quantum" class="form-control" value="10" aria-describedby="basic-addon1"></p>
+		<p><h4> Average CPU Time </h4>  <input type="text" id="cpuTime" class="form-control" value="10" aria-describedby="basic-addon1"></p>
+		<p><h4> Average IO Time </h4>  <input type="text" id="ioTime" class="form-control" value="5" aria-describedby="basic-addon1"></p>
+		<h3> Lists Limit </h3>
+		<p><h4> New </h4>  <input type="text" id="ioTime" class="form-control" value="10" aria-describedby="basic-addon1"></p>
+		<p><h4> Ready </h4>  <input type="text" id="ioTime" class="form-control" value="10" aria-describedby="basic-addon1"></p>
+		<p><h4> Waiting </h4>  <input type="text" id="ioTime" class="form-control" value="10" aria-describedby="basic-addon1"></p>
 		<p> <h4> Speedness </h4> </p>
 			<div class="btn-group" role="group" aria-label="...">
 			  <button type="button" class="btn btn-default" onclick="slow()" id="slow">Slow</button>
@@ -142,12 +154,12 @@
 		<tr>
 		<th> ID </th>
 		<th> Arrival </th>
-		<th> Total Time</th>
-		<th> Time Left </th>
-		<th> Resources </th>
+		<th> CPU Nedded </th>
+		<th> CPU Ussage </th>
 		<th> IO Time </th>
-		<th> Finished </th>
-		<th> Status </th>
+		<th> Time of IO </th>
+		<th> Finish Time </th>
+		<th> System Time </th>
 		</tr>
 	</table>
 	</div>
