@@ -66,7 +66,7 @@
 	<h1> Example </h1>
 <!-- First set of Processes states -->
 <div class="row col-md-12">
-	<div class="col-md-3">
+	<div class="col-md-3" style="max-height: 400px; overflow:auto;">
 		<table class="table table-bordered  table-striped" id="new">
 			<tr>
 			<th> New (Hold) </th>
@@ -74,7 +74,7 @@
 		</table>
 	</div>
 
-	<div class="col-md-3">
+	<div class="col-md-3" style="max-height: 300px; overflow:auto;">
 		<br>
 		<table class="table table-bordered  table-striped" id="ready">
 			<tr>
@@ -92,7 +92,7 @@
 		</table>
 	</div>
 
-	<div class="col-md-3">
+	<div class="col-md-3" style="max-height: 300px; overflow:auto;">
 		<table class="table table-bordered  table-striped " id="finished">
 			<tr>
 			<th> Finished</th>
@@ -103,7 +103,8 @@
 
 <!--  Second set of Processes states -->
 <div class="row col-md-12">
-	<div class= "col-md-4">
+	<div class= "col-md-4" style="max-height: 300px; overflow:auto;">
+	<br>
 		<table class="table table-bordered  table-striped" id="waiting">
 			<tr>
 			<th> Waiting </th>
@@ -111,6 +112,7 @@
 		</table>
 	</div>
 	<div class="col-md-3 col-md-offset-2">
+	<br>
 	<table class="table table-bordered  table-striped" id="io">
 		<tr>
 		<th> IO </th>
@@ -148,7 +150,7 @@
 			  <button type="button" class="btn btn-default" onClick="fcfsButton()" id="fcfs">First Come, First Served</button>
 			</div>
 	</div>
-	<div class="col-md-8">
+	<div class="col-md-8"  style="max-height: 800px; overflow:auto;">
 	<h2> PCB </h2>
 	<table class="table table-bordered  table-striped" id="pcb">
 		<tr>

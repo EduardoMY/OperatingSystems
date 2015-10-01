@@ -41,7 +41,7 @@ class Process{
 	}
 	
 	TotalTime(){
-		return this.processedTime + this.ioTime + this.waitingTime;
+		return this.cpuTime + this.ioTime + this.waitingTime;
 	}
 	
 	isDone (){
@@ -57,8 +57,14 @@ class Process{
 		data.push(this.cpuTime); //CPU Ussage
 		data.push(this.ioTimeNedded); //IO TIme nedded
 		data.push(this.ioTime); //IO Time Ussage
-		data.push(this.TotalTime() + this.arrival); // Time the process ended
-		data.push(this.TotalTime()); // Time in the SYstem
+		if(this.isDone()){
+			data.push(this.TotalTime() + this.arrival); // Time the process ended
+			data.push(this.TotalTime()); // Time in the SYstem
+		}
+		else {
+			data.push(Number.NaN);
+			data.push(Number.NaN);
+		}
 		return data;
 	}
 }
@@ -144,7 +150,6 @@ class PCB {
 	}
 } 
 
-
 function myTimer() {
 	if(mode===0 || mode===2 || mode===3)
 		return;
@@ -167,7 +172,7 @@ function validateValues(){
 
 	// Evaluate the quantum, should be an integer bigger than 1
 	posQuantum=document.getElementById("quantum").value;
-	if(!Number.isNaN(posQuantum) && Number.isInteger(Number(posQuantum)) && posQuantum>0 && posQuantum<=100){
+	if(!Number.isNaN(posQuantum) && Number.isInteger(Number(posQuantum)) && posQuantum>2 && posQuantum<=100){
 		quantum=Number(posQuantum);
 		document.getElementById("quantumNumber").innerHTML=quantum;	
 	}
@@ -178,7 +183,7 @@ function validateValues(){
 
 	// Evaluate the IOtime, should be an integer bigger than 0
 	posIOTime=document.getElementById("ioTime").value;
-	if(!Number.isNaN(posIOTime) && Number.isInteger(Number(posIOTime)) && posIOTime>=0 && posIOTime<=100){
+	if(!Number.isNaN(posIOTime) && Number.isInteger(Number(posIOTime)) && posIOTime>0 && posIOTime<=100){
 		ioTime=Number(posIOTime);
 	}
 	else {
@@ -188,7 +193,7 @@ function validateValues(){
 
 	// Evaluate the Size
 	posNewSize=document.getElementById("newsize").value;
-	if(!Number.isNaN(posNewSize) && Number.isInteger(Number(posNewSize)) && posNewSize>=0 && posNewSize<=100){
+	if(!Number.isNaN(posNewSize) && Number.isInteger(Number(posNewSize)) && posNewSize>=1 && posNewSize<=100){
 		newSize=Number(posNewSize);
 	}
 	else {
@@ -198,7 +203,7 @@ function validateValues(){
 
 	//
 	posReadySize=document.getElementById("readysize").value;
-	if(!Number.isNaN(posReadySize) && Number.isInteger(Number(posReadySize)) && posReadySize>=0 && posReadySize<=100){
+	if(!Number.isNaN(posReadySize) && Number.isInteger(Number(posReadySize)) && posReadySize>=1 && posReadySize<=100){
 		readySize=Number(posReadySize);
 	}
 	else {
@@ -208,7 +213,7 @@ function validateValues(){
 
 	//
 	posWaitingSize=document.getElementById("waitingsize").value;
-	if(!Number.isNaN(posWaitingSize) && Number.isInteger(Number(posWaitingSize)) && posWaitingSize>=0 && posWaitingSize<=100){
+	if(!Number.isNaN(posWaitingSize) && Number.isInteger(Number(posWaitingSize)) && posWaitingSize>=1 && posWaitingSize<=100){
 		waitingSize=Number(posWaitingSize);
 	}
 	else {
@@ -352,7 +357,7 @@ function modifyPCBRow(cells, actions){
 function newRowPCB(process){
 	var actions=process.Print();
 	var pcbTable=document.getElementById("pcb");
-	var newRow=pcbTable.insertRow(1);
+	var newRow=pcbTable.insertRow(-1);
 
 	for (var i = 0; i < actions.length; i++) {
 		newRow.insertCell(i).innerHTML=actions[i];
