@@ -8,8 +8,41 @@
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<style>
+<style> 
+.penguin {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    animation-name: example_penguin;
+    animation-duration: 4s;
+    animation-delay: 2s;
+    animation-iteration-count: infinite;
+}
+/* Standard syntax */
+@keyframes example_penguin {
+    0%   {left:0px; top:0px;}
+    25%  {left:200px; top:0px;}
+    50%  {left:200px; top:200px;}
+    75%  {left:0px; top:200px;}
+    100% {left:0px; top:0px;}
+}
 
+.fish{
+	width: 100px;
+    height: 100px;
+    position: absolute;
+    animation-name: example_fish;
+    animation-duration: 0s;
+    animation-delay: 2s;
+    animation-iteration-count: infinite;
+}
+@keyframes  example_fish{
+    0%   {left:0px; top:100px;}
+    25%  {left:200px; top:0px;}
+    50%  {left:200px; top:200px;}
+    75%  {left:0px; top:200px;}
+    100% {left:0px; top:0px;}
+}
 </style>
 
 <!-- Latest compiled and minified JavaScript -->
@@ -64,15 +97,18 @@
     </div>
     </div>
 
+<img src="public/penguin.gif" class="penguin"></img>
+<img src="public/fish.png" class="fish"></img>
+
 	<br><br> <!--Please Forgive mee -->
 	<h1> Processor & Device Manager </h1>
 <!-- First set of Processes states -->
 
 <div class="row col-md-12">
 	<div class="col-md-3" style="max-height: 400px; overflow:auto;">
-		<table class="table table-bordered  table-striped" id="new">
+		<table class="table table-bordered  table-striped" id="hold">
 			<tr>
-			<th> New (Hold) </th>
+			<th> Hold </th>
 			</tr>
 		</table>
 	</div>
@@ -138,7 +174,7 @@
 		<p><h4> Average CPU Time </h4>  <input type="text" id="cpuTime" class="form-control" value="10" aria-describedby="basic-addon1"></p>
 		<p><h4> Average IO Time </h4>  <input type="text" id="ioTime" class="form-control" value="5" aria-describedby="basic-addon1"></p>
 		<h3> Lists Limit </h3>
-		<p><h4> New </h4>  <input type="text" id="newsize" class="form-control" value="10" aria-describedby="basic-addon1"></p>
+		<p><h4> New </h4>  <input type="text" id="holdsize" class="form-control" value="10" aria-describedby="basic-addon1"></p>
 		<p><h4> Ready </h4>  <input type="text" id="readysize" class="form-control" value="10" aria-describedby="basic-addon1"></p>
 		<p><h4> Waiting </h4>  <input type="text" id="waitingsize" class="form-control" value="10" aria-describedby="basic-addon1"></p>
 		<p> <h4> Speedness </h4> </p>
