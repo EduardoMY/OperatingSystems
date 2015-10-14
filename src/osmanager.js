@@ -59,6 +59,7 @@ class Process{
 		data.push(this.ioTime); //IO Time Ussage
 		data.push(this.arrivalIO);
 		data.push(this.waitingTime);
+		
 		if(this.terminated){
 			data.push(this.TotalTime()); // Time in the SYstem
 			data.push(this.TotalTime() + this.arrival); // Time the process ended
@@ -66,12 +67,12 @@ class Process{
 			if(this.isDone())
 				status="Finished";
 			else 
-				status="Aborted"
+				status="Aborted";
 		}
 		else {
 			data.push(0);
 			data.push(0);
-			status="InSystem"
+			status="In System";
 		}
 		data.push(status); //Status: Finished or Aborted
 		return data;
