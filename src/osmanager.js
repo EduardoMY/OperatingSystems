@@ -8,7 +8,7 @@
 	var averageCPUTime=0; //
 	var holdSize=0, readySize=0, waitingSize=0;
 	var algorithm=0; //1=round robin, 2=fcfs
-	var fastValues=[100,1500,3000]; //Fast, normal, slow times intervals
+	var fastValues=[100,1500,4000]; //Fast, normal, slow times intervals
 	var myVarTime=null; //Stores the timers
 	var holdList=null; //
 	var readyList=null; //
@@ -17,7 +17,6 @@
 	var ioList=null; //
 	var pcb=null; //
 	var crucialState=false; 
-
 //implement pinguin
 
 class Process{
@@ -375,11 +374,16 @@ function checkSystemState(){
 function running_Finished(){
 	var dProcess=null;
 	if(!runningList.isEmpty() && runningList.Top().isDone()){
-		dProcess=runningList.Remove();
-		dProcess.terminated=true;
-		deleteFirstRow("running");
-		addRowsFirst("finished", dProcess);
-	}
+			/*var examplePenguin=document.getElementById("penguin");
+			examplePenguin.classList.add("penguin_running_finished");
+			setTimeout(function() {*/
+			dProcess=runningList.Remove();
+			dProcess.terminated=true;
+			deleteFirstRow("running");
+			addRowsFirst("finished", dProcess);
+		//}, fastValues[fastness-1]/5);
+			//examplePenguin.className="penguinBeginning";
+	}	
 	return dProcess;
 }
 
@@ -648,6 +652,9 @@ function fast() {
 function normal(){
 	if(mode!==1)
 		fastness=2;
+
+	//document.getElementById("penguinimg").style.visibility="hidden";
+	//document.getElementById("fishimg").style.visibility="hidden";
 }
 
 function slow(){

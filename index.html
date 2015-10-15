@@ -2,42 +2,58 @@
 <HTML>
 <HEAD>
 <TITLE>Maniac OS</TITLE>
+ <meta charset="UTF-8"> 
+
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
 <style> 
-.penguin {
+
+/*
+	Pez
+	De running a cualquier cosa
+	DE io a ready
+	De waiting a io
+	De ready a running
+	De hold a ready
+*/
+    /* 
+	Finished : 850, 0;
+	Running : 650, 30;
+	Ready: 380, 10;
+	Hold: 80, 0;
+	Waiting: -90, 250;
+	IO:500,200;
+    */
+
+.penguinBeginning {
+	/*visibility: hidden; */
     width: 100px;
     height: 100px;
     position: relative;
-    animation-name: example_penguin;
-    animation-duration: 10s;
-    animation-delay: 0s;
-    animation-iteration-count: infinite;
-}
-/* Standard syntax */
-@keyframes example_penguin {
-    0%   {left:850px; top:100px;}
-    25%  {left:650px; top:100px;} 
-    50%  {left:200px; top:200px;}
-    75%  {left:0px; top:200px;}
-    100% {left:0px; top:0px;}
+    left:650px; top:30px;
 }
 
-.fish{
-	width: 100px;
+.penguin_running_finished{
+	visibility: visible;
+    width: 100px;
     height: 100px;
-    position: absolute;
-    animation-name: example_fish;
-    animation-duration: 0s;
-    animation-delay: 2s;
-    animation-iteration-count: infinite;
+    position: relative;
+    animation-name: penguin_running_finished;
+    animation-duration: 0.75s;
+    animation-delay: 0s;
 }
-@keyframes  example_fish{
-    0%   {left:0px; top:100px;}
-    25%  {left:200px; top:0px;}
-    50%  {left:200px; top:200px;}
-    75%  {left:0px; top:200px;}
-    100% {left:0px; top:0px;}
+@keyframe penguin_running_finished{
+	to{	left:650px;	top:30px;}
+	from{	left:850px;	top:0px;}
+}
+
+.fishBeginning{
+	visibility: visible;
+	width: 80px;
+    height: 50px;
+    position: relative;
+        left:550px; top:50px;
 }
 </style>
 
@@ -79,26 +95,41 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
+          <h2 class="modal-title">Help Section</h2>
         </div>
         <div class="modal-body">
-          <h1>Rules</h1>
-          <p> </p>
+        <p> Welcome to Maniac OS. This is an amazing Operating System which is capable of handling more than one scheduling algorithms. Moreover, you can even change the size of lists, probability to create a new process, and more! In order for you to understand it a little bit more, you have this helpful section.</p>
+          <h3>Parameters values</h3>
+          <ul>
+          	<li> Probability: [0, 100]</li>
+          	<li> Quantum: [2, 100]</li>
+          	<li> Average CPU: [1, 100]</li>
+          	<li> Average IO: [1,CPU)</li>
+          	<li> Hold, ready, waiting: [1, 50]</li>
+          </ul>
+          <h3>Rules</h3>
+          <ul>
+          <li> First of all you need to select an speed and algorithm from the parameters list.</li>
+          	<li> To make a succesful change of any parameter, first you need to stop or pause the simulation. Then click Play again.</li>
+          	<li> Almost any parameter can be modified, except one: the probability of a process to require IO or not. It is all the time 50/50.</li>
+          </ul>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
         </div>
       </div>
       
     </div>
     </div>
 
-<img src="public/penguin.gif" class="penguin"></img>
-<img src="public/fish.png" class="fish"></img>
+
 
 	<br><br> <!--Please Forgive mee -->
 	<h1> Processor & Device Manager </h1>
 <!-- First set of Processes states -->
+
+<img src="public/penguin.gif" class="penguinBeginning" id="penguin"></img>
+<img src="public/fish.png" class="fishBeginning" id="fish"></img>
 
 <div class="row col-md-12">
 	<div class="col-md-3" style="max-height: 400px; overflow:auto;">
