@@ -71,7 +71,7 @@ class Process{
 		else {
 			data.push(0);
 			data.push(0);
-			status="In System";
+			status="InSystem";
 		}
 		data.push(status); //Status: Finished or Aborted
 		return data;
