@@ -9,23 +9,6 @@
 
 <style> 
 
-/*
-	Pez
-	De running a cualquier cosa
-	DE io a ready
-	De waiting a io
-	De ready a running
-	De hold a ready
-*/
-    /* 
-	Finished : 850, 0;
-	Running : 650, 30;
-	Ready: 380, 10;
-	Hold: 80, 0;
-	Waiting: -90, 250;
-	IO:500,200;
-    */
-
 .penguinBeginning {
 	/*visibility: hidden; */
     width: 100px;
@@ -45,7 +28,7 @@
 }
 @keyframe penguin_running_finished{
 	to{	left:650px;	top:30px;}
-	from{	left:850px;	top:0px;}
+	from{left:850px;	top:0px;}
 }
 
 .fishBeginning{
@@ -61,192 +44,320 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="src/osmanager.js"></script>
+<script src="src/page.js"></script>
+<script src="src/process.js"></script>
+<script src="src/processeslist.js"></script>
+<script src="src/pcb.js"></script>
+<script src="src/tap.js"></script>
 
 </HEAD>
 
 <BODY>
-<div class="container">
+	<div class="container">
 
-<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
-  <div class="container">
-		
-	      <p class="navbar-text">Clock counter <span class="label label-primary lbl-big" id="timer">0</span>	</p>
-	      <p class="navbar-text">Quantum <span class="label label-primary lbl-big" id="quantumNumber">0</span>	</p>
-		<div class="btn-group" role="group" aria-label="...">
-  			<button type="button" class="btn btn-default navbar-btn" onclick="playFunction()">
-  				<span class="glyphicon glyphicon-play"></span>Play</button>
-  			<button type="button" class="btn btn-default navbar-btn" onclick="pauseFunction()">
-  				<span class="glyphicon glyphicon-pause"></span>Pause</button>
-  			<button type="button" class="btn btn-default navbar-btn" onclick="stopFunction()">
-  				<span class="glyphicon glyphicon-stop"></span>Stop</button>
-		</div>      
-	<button type="button" class="btn btn-default navbar-btn navbar-right" aria-label="Right Align" data-toggle="modal" data-target="#help">
-  		<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>Help
-	</button>
-	</div>
-</nav>
-<!-- End of NavBar -->
+	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+	  <div class="container">
+			
+		      <p class="navbar-text">Clock counter <span class="label label-primary lbl-big" id="timer">0</span>	</p>
+		      <p class="navbar-text">Quantum <span class="label label-primary lbl-big" id="quantumNumber">0</span>	</p>
+			<div class="btn-group" role="group" aria-label="...">
+	  			<button type="button" class="btn btn-default navbar-btn" onclick="playFunction()">
+	  				<span class="glyphicon glyphicon-play"></span>Play</button>
+	  			<button type="button" class="btn btn-default navbar-btn" onclick="pauseFunction()">
+	  				<span class="glyphicon glyphicon-pause"></span>Pause</button>
+	  			<button type="button" class="btn btn-default navbar-btn" onclick="stopFunction()">
+	  				<span class="glyphicon glyphicon-stop"></span>Stop</button>
+			</div>      
+		<button type="button" class="btn btn-default navbar-btn navbar-right" aria-label="Right Align" data-toggle="modal" data-target="#help">
+	  		<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>Help
+		</button>
+		</div>
+	</nav>
+	<!-- End of NavBar -->
 
- <!-- Modal -->
-  <div class="modal fade" id="help" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h2 class="modal-title">Help Section</h2>
-        </div>
-        <div class="modal-body">
-        <p> Welcome to Maniac OS. This is an amazing Operating System which is capable of handling more than one scheduling algorithm. Moreover, you can even change the size of lists, probability to create a new process, and more! In order for you to understand it a little bit more, you have this helpful section.</p>
-          <h3>Parameters values</h3>
-          <ul>
-          	<li> Probability: [0, 100]</li>
-          	<li> Quantum: [2, 100]</li>
-          	<li> Average CPU: [1, 100]</li>
-          	<li> Average IO: [1,CPU)</li>
-          	<li> Hold, ready, waiting: [1, 50]</li>
-          	<li> Speedness: Slow (4s), Normal (1s) y Fast (1/10s)</li>
-          	<li> Algorithm: First Come, First Served  and Round-Robin</li>
-          </ul>
-          <h3> Rules </h3>
-          <ul>
-          <li> First of all you need to select an speed and algorithm, from the parameters list.</li>
-          <li> The buttons (play, pause, stop) are in the bar in the top, with Clock timer and Quantum value as well.</li>
-          <li> To make a succesful change of any parameter, first you need to stop or pause the simulation. Then click Play again.</li>
-          <li> Almost any parameter can be modified, except one: the probability of a process to require IO or not. It is all the time 50/50.</li>
-          	<li>  </li>
-          </ul>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
-        </div>
-      </div>
-      
-    </div>
-    </div>
+	 <!-- Modal -->
+		<div class="modal fade" id="help" role="dialog">
+			<div class="modal-dialog">
+	    
+		      <!-- Modal content-->
+		      <div class="modal-content">
+		        <div class="modal-header">
+		          <button type="button" class="close" data-dismiss="modal">&times;</button>
+		          <h2 class="modal-title">Help Section</h2>
+		        </div>
+		        <div class="modal-body">
+		        <p> Welcome to Maniac OS. This is an amazing Operating System which is capable of handling more than one scheduling algorithm. Moreover, you can even change the size of lists, probability to create a new process, and more! In order for you to understand it a little bit better, you have this helpful section.</p>
+		         <h3>Parameters values</h3>
+		          <ul>
+		          	<li> Probability: [0, 100]</li>
+		          	<li> Quantum: [2, 100]</li>
+		          	<li> Average CPU: [1, 100]</li>
+		          	<li> Average IO: [1,100]</li>
+		          	<li> Hold, ready, waiting: [1, 50]</li>
+		          	<li> Speediness: Slow (4s), Normal (1s) y Fast (1/10s)</li>
+		          	<li> Algorithm: First Come, First Served  and Round-Robin</li>
+		          </pul>
+		          <h3> Rules </h3>
+		          <ul>
+			          <li> First of all you need to select a speed and algorithm from the parameters list.</li>
+			          <li> The buttons (play, pause, stop) are in the bar on the top, with Clock timer and Quantum value as well.</li>
+			          <li> To make a succesful change of any parameter, first you need to stop or pause the simulation. Then click Play again.</li>
+			          <li> Almost any parameter can be modified, except one: the probability of a process to require IO or not. It is all the time 50/50.</li>
+		          </ul>
+		          <h3> PCB Elements</h3>
+		          <ul>
+			          <li> ID: </li>
+			          <li> Arrival:</li>
+			          <li> CPU Nedded: </li>
+			          <li> CPU Ussage </li>
+			          <li> IO Time: </li>
+			          <li> </li>
+		          </ul>
+		        </div>
+		        <div class="modal-footer">
+		          <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+		        </div>
+		      </div>
+	    	</div>
+		</div>
 
 
+		<br><br> <!--Please Forgive mee -->
+		<h1> Processor & Device Manager </h1>
+	<!-- First set of Processes states -->
 
-	<br><br> <!--Please Forgive mee -->
-	<h1> Processor & Device Manager </h1>
-<!-- First set of Processes states -->
+	<img src="public/penguin.gif" class="penguinBeginning" id="penguin"></img>
+	<img src="public/fish.png" class="fishBeginning" id="fish"></img>
+	      <!-- Tab panes -->
 
-<img src="public/penguin.gif" class="penguinBeginning" id="penguin"></img>
-<img src="public/fish.png" class="fishBeginning" id="fish"></img>
-
-<div class="row col-md-12">
-	<div class="col-md-3" style="max-height: 400px; overflow:auto;">
-		<table class="table table-bordered  table-striped" id="hold">
-			<tr>
-			<th> Hold </th>
-			</tr>
-		</table>
-	</div>
-
-	<div class="col-md-3" style="max-height: 300px; overflow:auto;">
-		<br>
-		<table class="table table-bordered  table-striped" id="ready">
-			<tr>
-			<th> Ready </th>
-			</tr>
-		</table>
-	</div>
-
-	<div class="col-md-3"> 
-		<br> <br>
-		<table class="table table-bordered  table-striped" id="running">
-			<tr>
-			<th> Running </th>
-			</tr>
-		</table>
-	</div>
-
-	<div class="col-md-3" style="max-height: 300px; overflow:auto;">
-		<table class="table table-bordered  table-striped " id="finished">
-			<tr>
-			<th> Finished</th>
-			</tr>
-		</table>
-	</div>
-</div>
-
-<!--  Second set of Processes states -->
-<div class="row col-md-12">
-	<div class= "col-md-4" style="max-height: 300px; overflow:auto;">
-	<br>
-		<table class="table table-bordered  table-striped" id="waiting">
-			<tr>
-			<th> Waiting </th>
-			</tr>
-		</table>
-	</div>
-	<div class="col-md-3 col-md-offset-2">
-	<br>
-	<table class="table table-bordered  table-striped" id="io">
-		<tr>
-		<th> IO </th>
-		</tr>
-	</table>
-	</div>
-</div>
-
-<!--  -->
-<div class="row col-md-12">
-
-</div>
-
-<div class="row col-md-12">
 	<div class="col-md-3">
-		<h2> Parameters </h2>
-		<br>
-		<p> <h4>Probability to generate a process  </h4> <input type="text" id="probability" class="form-control" value="50" aria-describedby="basic-addon1"></p>
-		<p> <h4> Quantum Value </h4> <input type="text" id="quantum" class="form-control" value="10" aria-describedby="basic-addon1"></p>
-		<p><h4> Average CPU Time </h4>  <input type="text" id="cpuTime" class="form-control" value="10" aria-describedby="basic-addon1"></p>
-		<p><h4> Average IO Time </h4>  <input type="text" id="ioTime" class="form-control" value="5" aria-describedby="basic-addon1"></p>
-		<h3> Lists Limit </h3>
-		<p><h4> New </h4>  <input type="text" id="holdsize" class="form-control" value="10" aria-describedby="basic-addon1"></p>
-		<p><h4> Ready </h4>  <input type="text" id="readysize" class="form-control" value="10" aria-describedby="basic-addon1"></p>
-		<p><h4> Waiting </h4>  <input type="text" id="waitingsize" class="form-control" value="10" aria-describedby="basic-addon1"></p>
-		<p> <h4> Speedness </h4> </p>
-			<div class="btn-group" role="group" aria-label="...">
-			  <button type="button" class="btn btn-default" onclick="slow()" id="slow">Slow</button>
-			  <button type="button" class="btn btn-default" onclick="normal()" id="normal">Normal</button>
-			  <button type="button" class="btn btn-default" onclick="fast()" id="fast">Fast</button>
-			</div>
-		<p> <h4> Algorithm </h4> </p>
-			<div class="btn-group" role="group" aria-label="...">
-			  <button type="button" class="btn btn-default" onclick="roundRobinButton()" id="round_robin">Round-Robin</button>
-			  <button type="button" class="btn btn-default" onClick="fcfsButton()" id="fcfs">First Come, First Served</button>
-			</div>
+			<h2> Parameters </h2>
+			<br>
+			<p> <h4>Probability to Generate a Process  </h4> <input type="text" id="probability" class="form-control" value="50" aria-describedby="basic-addon1"></p>
+			<p> <h4>Probability to paging  </h4> <input type="text" id="pagingprobability" class="form-control" value="50" aria-describedby="basic-addon1"></p>
+			<p> <h4>Probability to use Printer   </h4> <input type="text" id="printerprobability" class="form-control" value="50" aria-describedby="basic-addon1"></p>
+			<p> <h4> Quantum Value </h4> <input type="text" id="quantum" class="form-control" value="10" aria-describedby="basic-addon1"></p>
+			<p><h4> Average CPU Time </h4>  <input type="text" id="cpuTime" class="form-control" value="15" aria-describedby="basic-addon1"></p>
+			<p><h4> Average IO Time </h4>  <input type="text" id="ioTime" class="form-control" value="10" aria-describedby="basic-addon1"></p>
+			<p><h4> Average Disk Time </h4>  <input type="text" id="diskTime" class="form-control" value="10" aria-describedby="basic-addon1"></p>
+			<p><h4> Frame Size (KB)</h4> 
+			   <select class="form-control" id="frame" onchange="setRamSize()">
+				    <option >4</option>
+				    <option>8</option>
+				    <option>16</option>
+				    <option>32</option>
+				    <option selected="selected">64</option>
+				  </select>
+  			<p><h4> Ram Size (KB)</h4>  
+  			<select class="form-control" id="ram">
+				    <option selected="selected">256</option>
+  			</select>
+			<h3> Lists Limit </h3>
+			<p><h4> Hold </h4>  <input type="text" id="holdsize" class="form-control" value="10" aria-describedby="basic-addon1"></p>
+			<p><h4> Ready </h4>  <input type="text" id="readysize" class="form-control" value="10" aria-describedby="basic-addon1"></p>
+			<p><h4> Waiting for Printer </h4>  <input type="text" id="waitingprintersize" class="form-control" value="10" aria-describedby="basic-addon1"></p>
+			<p><h4> Waiting for Disk </h4>  <input type="text" id="waitingdisksize" class="form-control" value="10" aria-describedby="basic-addon1"></p
+			<p> <h4> Speediness </h4> </p>
+				<div class="btn-group" role="group" aria-label="...">
+				  <button type="button" class="btn btn-default" onclick="slow()" id="slow">Slow</button>
+				  <button type="button" class="btn btn-default" onclick="normal()" id="normal">Normal</button>
+				  <button type="button" class="btn btn-default" onclick="fast()" id="fast">Fast</button>
+				</div>
+			<p> <h4> Processes Algorithm </h4> </p>
+				<div class="btn-group" role="group" aria-label="...">
+				  <button type="button" class="btn btn-default" onclick="roundRobinButton()" id="round_robin">Round-Robin</button>
+				  <button type="button" class="btn btn-default" onClick="fcfsButton()" id="fcfs">First Come, First Served</button>
+				</div>
+				<p> <h4> Paging Algorithm </h4> </p>
+				<div class="btn-group" role="group" aria-label="...">
+				  <button type="button" class="btn btn-default" onclick="oldest()" id="oldest_frame">Oldest Frame</button>
+				  <button type="button" class="btn btn-default" onClick="leastUsed()" id="least_used">Least Used Frame</button>
+				</div>
 	</div>
-	<div class="col-md-9"  style="max-height: 800px; overflow:auto;">
-	<h2> PCB </h2>
-	<table class="table table-bordered  table-striped" id="pcb">
-		<tr>
-		<th> ID </th>
-		<th> Arrival </th>
-		<th> CPU Nedded </th>
-		<th> CPU Ussage </th>
-		<th> IO Time </th>
-		<th> Time of IO </th>
-		<th> Arrival to Printer </th>
-		<th> Waiting Time</th>
-		<th> System Time </th>
-		<th> Finish Time </th>
-		<th> Status</th>
-		</tr>
-	</table>
+
+		<div class="col-md-9">
+
+		  <!-- Nav tabs -->
+		  <ul class="nav nav-tabs" role="tablist">
+		    <li role="presentation" class="active"><a href="#processes" aria-controls="processes" role="tab" data-toggle="tab">Processes</a></li>
+		    <li role="presentation"><a href="#pcbTable" aria-controls="profile" role="tab" data-toggle="tab">PCB</a></li>
+		    <li role="presentation"><a href="#ramManagemet" aria-controls="ramgrid" role="tab" data-toggle="tab">RAM Grid</a></li>
+		    <li role="presentation"><a href="#tapTable" aria-controls="tap" role="tab" data-toggle="tab">TAP</a></li>
+		  </ul>
+
+		  <div class="tab-content">
+		    <div role="tabpanel" class="tab-pane active" id="processes"> 
+
+			    <!-- First set of Processes states -->
+			    <div class="row col-md-12">
+					<div class="col-md-3" style="max-height: 400px; overflow:auto;">
+						<table class="table table-bordered  table-striped" id="hold">
+							<tr>
+							<th> Hold </th>
+							</tr>
+						</table>
+					</div>
+
+					<div class="col-md-3" style="max-height: 300px; overflow:auto;">
+						<br>
+						<table class="table table-bordered  table-striped" id="ready">
+							<tr>
+							<th> Ready </th>
+							</tr>
+						</table>
+					</div>
+
+					<div class="col-md-3"> 
+						<br> <br>
+						<table class="table table-bordered  table-striped" id="running">
+							<tr>
+							<th> Running </th>
+							</tr>
+						</table>
+					</div>
+
+					<div class="col-md-3" style="max-height: 300px; overflow:auto;">
+						<table class="table table-bordered  table-striped " id="finished">
+							<tr>
+							<th> Finished</th>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+			<!--  Second set of Processes states -->
+				<div class="row col-md-12">
+					<div class= "col-md-3" style="max-height: 300px; overflow:auto;">
+					<br>
+						<table class="table table-bordered  table-striped" id="waitingprinter">
+							<tr>
+							<th> Waiting for Printer</th>
+							</tr>
+						</table>
+					</div>
+					<div class="col-md-3"> <!-- col-md-offset-2 -->
+					<br>
+					<table class="table table-bordered  table-striped" id="ioprinter">
+						<tr>
+						<th> Using Printer </th>
+						</tr>
+					</table>
+					</div>
+					<div class= "col-md-3" style="max-height: 300px; overflow:auto;">
+					<br>
+						<table class="table table-bordered  table-striped" id="waitingdisk">
+							<tr>
+							<th> Waiting for Disk</th>
+							</tr>
+						</table>
+					</div>
+					<div class="col-md-3"> <!-- col-md-offset-2 -->
+					<br>
+						<table class="table table-bordered  table-striped" id="iodisk">
+							<tr>
+							<th> Using Disk </th>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+			</div>
+
+		    <div role="tabpanel" class="tab-pane" id="pcbTable">
+		    	
+					<div class="col-md-12"  style="max-height: 800px; overflow:auto;">
+						<h2> PCB </h2>
+						<table class="table table-bordered  table-striped" id="pcb">
+							<tr>
+								<th> ID </th>
+								<th> Arrival </th>
+								<th> CPU Nedded </th>
+								<th> CPU Ussage </th>
+								<th> Size (KBs) </th>
+								<th> Frames </th>
+								<th> Printer Time </th>
+								<th> Time of Printer </th>
+								<th> Arrival to Printer </th>
+								<th> Waiting Time </th>
+								<th> System Time </th>
+								<th> Finish Time </th>
+								<th> Efficiency </th>
+								<th> Status </th>
+							</tr>
+						</table>
+					</div>
+		    </div>
+
+		    <div role="tabpanel" class="tab-pane" id="ramManagemet">
+		    	<div class="row">
+		    		<div class ="col-md-8">
+				    	<table class ="table table-bordered" id="ramgrid">
+				    	<tr> 
+				    	<th> :)</th>
+				    	<th> A </th>
+				    	<th> B </th>
+				    	<th> C </th>
+				    	<th> D </th>
+				    	<th> E </th>
+				    	<th> F </th>
+				    	<th> G </th>
+				    	<th> H </th>
+				    	</tr>
+				    	<tr>
+				    		<td> <strong> 1 </strong></td>
+				    	</tr>
+				    	<tr> 
+				    		<td><strong> 2 </strong></td>
+				    	</tr>
+				    	<tr> 
+				    		<td><strong> 3 </strong></td>
+				    	</tr>
+				    	<tr>
+				    		<td> <strong> 4 </strong></td>
+				    	</tr>
+				    	<tr>
+				    		<td> <strong>5 </strong></td>
+				    	</tr>
+				    	<tr>
+				    		<td> <strong>6 </strong></td>
+				    	</tr>
+				    	<tr>
+				    		<td><strong> 7 </strong></td>
+				    	</tr>
+				    	<tr>
+				    		<td><strong> 8 </strong></td>
+				    	</tr>
+				    	</table>
+			    	</div>
+			    	<div class ="col-md-3 col-md-offset-1">
+				    	<table class="table table-bordered  table-striped" id="swap">
+						<tr>
+				    		<th> Swap Directory</th>
+				    	</tr>
+				    	</table>
+			    	</div>
+		    	</div>	
+		    </div>
+		    <div role="tabpanel" class="tab-pane" id="tapTable">
+		    <h1> TAP </h1>
+		    	<table class="table table-bordered  table-striped" id="tap">
+		    		<tr>
+		    		<th>Process </th>
+		    		<th> Frame 1</th>
+		    		<th> Location </th>
+		    		<th> Frame 2</th>
+		    		<th> Location</th>
+		    		<th> Frame 3 </th>
+		    		<th> Location </th>
+		    		<th> Frame 4</th>
+		    		<th> Location </th>
+		    		<th> Total Size </th>
+		    		</tr>
+		    	</table>
+		    </div>
+		</div>
+
+		</div>
 	</div>
-</div>
-
-
-<!-- Neccesary -->
-<div class="row col-md-12">
-<br><br>
-Powered by Linux
-</div>
-</div>
-
 </BODY>
 </HTML>
