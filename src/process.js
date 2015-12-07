@@ -1,5 +1,5 @@
 class Process{
-	constructor(id, arrival, cpuTime, ioTime, diskTime, arrivalIO, pageSpace){
+	constructor(id, arrival, cpuTime, ioTime, diskTime, arrivalIO, framesSize,Space){
 	
 	this.id=id;
 	this.arrivalIO=arrivalIO;
@@ -11,8 +11,42 @@ class Process{
 	this.arrival=arrival;
 	this.cpuTimeNedded=cpuTime;
 	this.ioTimeNedded=ioTime;
+	this.space=Space;
+	this.pages = this.getPages(framesSize); 
+	this.activePage=0; //
 	}
 	
+	getPages(framesSize){
+		var example=[];
+		var pagesAmount=Math.floor(this.space/framesSize);
+		var page;
+		if(this.space%framesSize!==0)
+			pagesAmount+=1;
+
+		for (var c=0; c<pagesAmount; c++){
+			page=new Page(c, framesSize, this.id);
+			example.push(page);
+			}
+		return example;
+	}
+
+	getActivePage(){
+		return this.pages[this.activePage];
+	}
+
+	updateProcessed(){
+	}
+
+	updateInactivePages(){
+		for (var i = this.pages.length - 1; i >= 0; i--){
+			(this.pages[i])['time']++;
+			//(this.pages[i])['use']++;
+		}
+	}
+	updateActivePage(){
+		
+	}
+
 	TotalTime(){
 		return this.cpuTime + this.ioTime + this.waitingTime;
 	}
@@ -21,6 +55,19 @@ class Process{
 		return this.cpuTime === this.cpuTimeNedded; 
 	}
 
+	PrintRam(){
+		//id
+		var data=[];
+		data.push(this.id);
+		for (var i = 0; i < this.pages.length; i++) {
+			data.push(i);
+			data.push(this.pages[i].getLocation());
+			data.push(this.pages[i].size);
+		};
+		//data.push(this.space);
+		return data;
+	}
+	
 	Print(){ //only gives an array with the data
 		//format: ID|Arrival|CPU nedded| CPU Ussage| IO TIme | Time of IO| Arrival Printer| 
 		//	Waiting Time |  Time in the System | Finish Time| Status
@@ -30,8 +77,8 @@ class Process{
 		data.push(this.arrival); //Arival
 		data.push(this.cpuTimeNedded); //CPU nedded
 		data.push(this.cpuTime); //CPU Ussage
-		data.push(0);//Size
-		data.push(4);//Frames
+		data.push(this.space);//Size
+		data.push(this.pages.length);//Frames
 		data.push(this.ioTimeNedded); //IO TIme nedded
 		data.push(this.ioTime); //IO Time Ussage
 		data.push(this.arrivalIO); //

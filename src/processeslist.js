@@ -51,4 +51,16 @@ class ProcessesList {
 	isEmpty(){
 		return this.length===0;
 	}
+
+	pagesInactive(){
+		for (var i = this.processes.length - 1; i >= 0; i--) {
+			this.processes[i].updateInactivePages();
+		};
+	}
+
+	pageActive(){
+		for (var i = this.processes.length - 1; i >= 0; i--) {
+			this.processes[i].updateActivePage();
+		};
+	}
 }

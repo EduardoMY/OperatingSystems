@@ -161,16 +161,16 @@
 				<div class="btn-group" role="group" aria-label="...">
 				  <button type="button" class="btn btn-default" onclick="slow()" id="slow">Slow</button>
 				  <button type="button" class="btn btn-default" onclick="normal()" id="normal">Normal</button>
-				  <button type="button" class="btn btn-default" onclick="fast()" id="fast">Fast</button>
+				  <button type="button" class="btn btn-success" onclick="fast()" id="fast">Fast</button>
 				</div>
 			<p> <h4> Processes Algorithm </h4> </p>
 				<div class="btn-group" role="group" aria-label="...">
-				  <button type="button" class="btn btn-default" onclick="roundRobinButton()" id="round_robin">Round-Robin</button>
+				  <button type="button" class="btn btn-success" onclick="roundRobinButton()" id="round_robin">Round-Robin</button>
 				  <button type="button" class="btn btn-default" onClick="fcfsButton()" id="fcfs">First Come, First Served</button>
 				</div>
 				<p> <h4> Paging Algorithm </h4> </p>
 				<div class="btn-group" role="group" aria-label="...">
-				  <button type="button" class="btn btn-default" onclick="oldest()" id="oldest_frame">Oldest Frame</button>
+				  <button type="button" class="btn btn-success" onclick="oldest()" id="oldest_frame">Oldest Frame</button>
 				  <button type="button" class="btn btn-default" onClick="leastUsed()" id="least_used">Least Used Frame</button>
 				</div>
 	</div>
@@ -281,7 +281,7 @@
 								<th> Waiting Time </th>
 								<th> System Time </th>
 								<th> Finish Time </th>
-								<th> Efficiency </th>
+								<th> Efficiency (%)</th>
 								<th> Status </th>
 							</tr>
 						</table>
@@ -339,22 +339,63 @@
 		    	</div>	
 		    </div>
 		    <div role="tabpanel" class="tab-pane" id="tapTable">
-		    <h1> TAP </h1>
-		    	<table class="table table-bordered  table-striped" id="tap">
-		    		<tr>
-		    		<th>Process </th>
-		    		<th> Frame 1</th>
-		    		<th> Location </th>
-		    		<th> Frame 2</th>
-		    		<th> Location</th>
-		    		<th> Frame 3 </th>
-		    		<th> Location </th>
-		    		<th> Frame 4</th>
-		    		<th> Location </th>
-		    		<th> Total Size </th>
-		    		</tr>
-		    	</table>
-		    </div>
+
+		    	<ul class="nav nav-tabs" role="tablist">
+		    		<li role="presentation" class="active"><a href="#tapTable1" aria-controls="processes" role="tab" data-toggle="tab">Tap 1</a></li>
+		    		<li role="presentation"><a href="#tapTable2" aria-controls="profile" role="tab" data-toggle="tab">Tap 2</a></li>
+		    		<li role="presentation"><a href="#tapTable3" aria-controls="ramgrid" role="tab" data-toggle="tab">Tap 3</a></li>
+		    		<li role="presentation"><a href="#tapTable4" aria-controls="tap" role="tab" data-toggle="tab">Tap 4</a></li>
+		    		<li role="presentation"><a href="#tapTable5" aria-controls="processes" role="tab" data-toggle="tab">Tap 5</a></li>
+		    		<li role="presentation"><a href="#tapTable6" aria-controls="profile" role="tab" data-toggle="tab">Tap 6</a></li>
+		    		<li role="presentation"><a href="#tapTable7" aria-controls="ramgrid" role="tab" data-toggle="tab">Tap 7</a></li>
+		    		<li role="presentation"><a href="#tapTable8" aria-controls="tap" role="tab" data-toggle="tab">Tap 8</a></li>
+		  		</ul>
+		  	<div class="tab-content">
+		    	<div role="tabpanel" class="tab-pane active" id="tapTable1"> 
+			    	<table class="table table-bordered  table-striped" id="tap1">
+			    		<tr>
+			    		<th> Process </th>
+			    		<th> 1</th>
+			    		<th> L </th>
+			    		<th> S </th>
+			    		<th> 2 </th>
+			    		<th> L </th>
+			    		<th> S </th>
+			    		<th> 3 </th>
+			    		<th> L </th>
+			    		<th> S </th>
+			    		<th> 4 </th>
+			    		<th> L </th>
+			    		<th> S </th>
+			    		<!-- <th> Total Size </th> -->
+			    		</tr>
+			    	</table>
+		    	</div>
+		    		  <!--	<div class="tab-content"> -->
+		    	<div role="tabpanel" class="tab-pane" id="tapTable2"> 
+		    	
+		    	</div>
+		    	
+		    	<div role="tabpanel" class="tab-pane" id="tapTable3">
+		    	</div> 
+		    	
+		    	<div role="tabpanel" class="tab-pane" id="tapTable4">
+		    	</div>
+
+		    	<div role="tabpanel" class="tab-pane" id="tapTable5">
+		    	</div>
+
+		    	<div role="tabpanel" class="tab-pane" id="tapTable6">
+		    	</div>
+
+		    	<div role="tabpanel" class="tab-pane" id="tapTable7"> 
+		    	</div>
+
+		    	<div role="tabpanel" class="tab-pane" id="tapTable8">
+		    	</div>
+
+		    	</div> 
+		    </div> <!-- 
 		</div>
 
 		</div>
