@@ -1,10 +1,10 @@
 class ProcessesList {
 
 	constructor (maxProcessesList) {
-	this.maxProcessesList=maxProcessesList;
-	this.processes=[];
-	this.length=0;
-	this.isLocked=false;
+		this.maxProcessesList=maxProcessesList;
+		this.processes=[];
+		this.length=0;
+		this.isLocked=false;
 	}
 
 	Push(process){
@@ -50,17 +50,5 @@ class ProcessesList {
 
 	isEmpty(){
 		return this.length===0;
-	}
-
-	pagesInactive(){
-		for (var i = this.processes.length - 1; i >= 0; i--) {
-			this.processes[i].updateInactivePages();
-		};
-	}
-
-	pageActive(){
-		for (var i = this.processes.length - 1; i >= 0; i--) {
-			this.processes[i].updateActivePage();
-		};
 	}
 }

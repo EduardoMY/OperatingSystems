@@ -5,6 +5,7 @@ class Process{
 	this.arrivalIO=arrivalIO;
 	this.cpuCounter=0;
 	this.ioTime=0;
+	this.diskTime=0;
 	this.cpuTime=0;
 	this.waitingTime=0;
 	this.terminated=false;
@@ -34,17 +35,19 @@ class Process{
 		return this.pages[this.activePage];
 	}
 
-	updateProcessed(){
-	}
+	setOtherActivePage(){
+		var couldPage=Math.floor(Math.random() * this.pages.length )+1;
+		if(this.pages.length===1)
+			return false; 
 
-	updateInactivePages(){
-		for (var i = this.pages.length - 1; i >= 0; i--){
-			(this.pages[i])['time']++;
-			//(this.pages[i])['use']++;
-		}
-	}
-	updateActivePage(){
-		
+		if(couldPage>=this.pages.length)
+			couldPage-=1;
+		else if(couldPage===this.activePage)
+			couldPage-=1
+		if(couldPage===-1)
+			couldPage=1;
+		this.activePage=couldPage;
+		return true;	
 	}
 
 	TotalTime(){
@@ -60,9 +63,9 @@ class Process{
 		var data=[];
 		data.push(this.id);
 		for (var i = 0; i < this.pages.length; i++) {
-			data.push(i);
 			data.push(this.pages[i].getLocation());
-			data.push(this.pages[i].size);
+			data.push(this.pages[i].use);
+			data.push(this.pages[i].time);
 		};
 		//data.push(this.space);
 		return data;

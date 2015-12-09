@@ -96,7 +96,9 @@
 		          	<li> Hold, ready, waiting: [1, 50]</li>
 		          	<li> Speediness: Slow (4s), Normal (1s) y Fast (1/10s)</li>
 		          	<li> Algorithm: First Come, First Served  and Round-Robin</li>
-		          </pul>
+		          	<li> </li>
+		          	<li> </li>
+		          </ul>
 		          <h3> Rules </h3>
 		          <ul>
 			          <li> First of all you need to select a speed and algorithm from the parameters list.</li>
@@ -107,11 +109,14 @@
 		          <h3> PCB Elements</h3>
 		          <ul>
 			          <li> ID: </li>
-			          <li> Arrival:</li>
+			          <li> Arrival: </li>
 			          <li> CPU Nedded: </li>
 			          <li> CPU Ussage </li>
 			          <li> IO Time: </li>
 			          <li> </li>
+		          </ul>
+		          <h3> TAP Structure </h3>
+		          <ul>
 		          </ul>
 		        </div>
 		        <div class="modal-footer">
@@ -134,12 +139,12 @@
 			<h2> Parameters </h2>
 			<br>
 			<p> <h4>Probability to Generate a Process  </h4> <input type="text" id="probability" class="form-control" value="50" aria-describedby="basic-addon1"></p>
-			<p> <h4>Probability to paging  </h4> <input type="text" id="pagingprobability" class="form-control" value="50" aria-describedby="basic-addon1"></p>
+			<p> <h4>Probability to paging  </h4> <input type="text" id="pagingprobability" class="form-control" value="10" aria-describedby="basic-addon1"></p>
 			<p> <h4>Probability to use Printer   </h4> <input type="text" id="printerprobability" class="form-control" value="50" aria-describedby="basic-addon1"></p>
 			<p> <h4> Quantum Value </h4> <input type="text" id="quantum" class="form-control" value="10" aria-describedby="basic-addon1"></p>
 			<p><h4> Average CPU Time </h4>  <input type="text" id="cpuTime" class="form-control" value="15" aria-describedby="basic-addon1"></p>
 			<p><h4> Average IO Time </h4>  <input type="text" id="ioTime" class="form-control" value="10" aria-describedby="basic-addon1"></p>
-			<p><h4> Average Disk Time </h4>  <input type="text" id="diskTime" class="form-control" value="10" aria-describedby="basic-addon1"></p>
+			<p><h4> Average Disk Time </h4> <input type="text" id="diskTime" class="form-control" value="10" aria-describedby="basic-addon1"></p>
 			<p><h4> Frame Size (KB)</h4> 
 			   <select class="form-control" id="frame" onchange="setRamSize()">
 				    <option >4</option>
@@ -355,47 +360,268 @@
 			    	<table class="table table-bordered  table-striped" id="tap1">
 			    		<tr>
 			    		<th> Process </th>
-			    		<th> 1</th>
-			    		<th> L </th>
-			    		<th> S </th>
-			    		<th> 2 </th>
-			    		<th> L </th>
-			    		<th> S </th>
-			    		<th> 3 </th>
-			    		<th> L </th>
-			    		<th> S </th>
-			    		<th> 4 </th>
-			    		<th> L </th>
-			    		<th> S </th>
+			    		<th> 1-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 2-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 3-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 4-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			       		<th> 5-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 6-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 7-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 8-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
 			    		<!-- <th> Total Size </th> -->
 			    		</tr>
 			    	</table>
 		    	</div>
 		    		  <!--	<div class="tab-content"> -->
 		    	<div role="tabpanel" class="tab-pane" id="tapTable2"> 
-		    	
+		   	    	<table class="table table-bordered  table-striped" id="tap2">
+			    		<tr>
+			    		<th> Process </th>
+			    		<th> 9-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 10-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 11-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 12-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 13-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 14-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 15-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 16-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<!-- <th> Total Size </th> -->
+			    		</tr>
+			    	</table>
 		    	</div>
 		    	
 		    	<div role="tabpanel" class="tab-pane" id="tapTable3">
+		    		<table class="table table-bordered  table-striped" id="tap3">
+			    		<tr>
+			    		<th> Process </th>
+			    		<th> 17-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 18-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 19-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 20-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 21-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 22-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 23-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 24-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<!-- <th> Total Size </th> -->
+			    		</tr>
+			    	</table>
 		    	</div> 
 		    	
 		    	<div role="tabpanel" class="tab-pane" id="tapTable4">
+		    		<table class="table table-bordered  table-striped" id="tap4">
+			    		<tr>
+			    		<th> Process </th>
+			    		<th> 25-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 26-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 27-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 28-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 29-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 30-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 31-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 32-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<!-- <th> Total Size </th> -->
+			    		</tr>
+			    	</table>
 		    	</div>
 
 		    	<div role="tabpanel" class="tab-pane" id="tapTable5">
+		        	<table class="table table-bordered  table-striped" id="tap5">
+			    		<tr>
+			    		<th> Process </th>
+			    		<th> 33-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 34-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 35-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 36-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 37-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 38-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 39-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 40-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<!-- <th> Total Size </th> -->
+			    		</tr>
+			    	</table>
 		    	</div>
 
 		    	<div role="tabpanel" class="tab-pane" id="tapTable6">
+			    	<table class="table table-bordered  table-striped" id="tap6">
+			    		<tr>
+			    		<th> Process </th>
+			    		<th> 41-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 42-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 43-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 44-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 45-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 46-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 47-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 48-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<!-- <th> Total Size </th> -->
+			    		</tr>
+			    	</table>
 		    	</div>
 
 		    	<div role="tabpanel" class="tab-pane" id="tapTable7"> 
+		    		<table class="table table-bordered  table-striped" id="tap7">
+			    		<tr>
+			    		<th> Process </th>
+			    		<th> 49-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 50-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 51-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 52-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 53-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 54-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 55-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 56-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<!-- <th> Total Size </th> -->
+			    		</tr>
+			    	</table>
 		    	</div>
 
 		    	<div role="tabpanel" class="tab-pane" id="tapTable8">
+		    		<table class="table table-bordered  table-striped" id="tap8">
+			    		<tr>
+			    		<th> Process </th>
+			    		<th> 57-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 58-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 59-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 60-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 61-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 62-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 63-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<th> 64-L </th>
+			    		<th> U </th>
+			    		<th> T </th>
+			    		<!-- <th> Total Size </th> -->
+			    		</tr>
+			    	</table>
 		    	</div>
 
 		    	</div> 
-		    </div> <!-- 
+		    </div> <!-- -->
 		</div>
 
 		</div>
