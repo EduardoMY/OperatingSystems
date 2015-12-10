@@ -12,6 +12,7 @@ class Process{
 	this.arrival=arrival;
 	this.cpuTimeNedded=cpuTime;
 	this.ioTimeNedded=ioTime;
+	this.diskTimeNedded=diskTime;
 	this.space=Space;
 	this.pages = this.getPages(framesSize); 
 	this.activePage=0; //
