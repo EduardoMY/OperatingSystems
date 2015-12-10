@@ -92,15 +92,18 @@
 		          	<li> Probability: [0, 100]</li>
 		          	<li> Probability to change Page of a single Process: [0, 100] </li>
 		          	<li> Probability of a process to need IO: [0,100]</li>
-		          	<li> </li>
 		          	<li> Quantum: [2, 100]</li>
 		          	<li> Average CPU (nedded): [1, 100]</li>
 		          	<li> Average IO (nedded): [1,100]</li>
-		          	<li> Hold, ready, waiting: [1, 50]</li>
-		          	<li> Speediness: Slow (4s), Normal (1s) y Fast (1/10s)</li>
+		          	<li> Average Disk (nedded): [1,100]</li>
+		          	<li> Frame Size:[The amount given]
+		          	</li>
+		          	<li> Ram Size: [The amount given] It changes according to the Frame Size.
+		          	</li>
+		          	<li> Hold, ready, waiting, waiting for disk: [1, 50]</li>
+		          	<li> Speediness: Slow (2s), Normal (1.5s) y Fast (1/10s)</li>
 		          	<li> Algorithm: First Come, First Served  and Round-Robin</li>
-		          	<li> </li>
-		          	<li> </li>
+		          	<li>  Paging Algorithm: Oldest, least used</li>
 		          </ul>
 		          <h3> Rules </h3>
 		          <ul>
@@ -114,12 +117,23 @@
 			          <li> ID: </li>
 			          <li> Arrival: </li>
 			          <li> CPU Nedded: </li>
-			          <li> CPU Ussage </li>
-			          <li> IO Time: </li>
-			          <li> </li>
+			          <li> CPU Ussage: </li>
+			          <li> Size </li>
+			          <li> Frames </li>
+			          <li> Printer Time: </li>
+			          <li> Time of Printer: </li>
+			          <li> Arrival to Printer: </li>
+			          <li> Waiting Time: </li>
+			          <li> System Time: </li>
+			          <li> Finish Time: </li>
+			          <li> Efficiency: </li>
+			          <li> Status: </li>
 		          </ul>
 		          <h3> TAP Structure </h3>
 		          <ul>
+		          <li> The tap number + L means the location (RAM, Disk or Not Loaded)
+		          <li> U means the amount of cpu time it has accumulated.</li>
+		          <li> T means the time that page was loaded to Ram, it will turn 0 again if it goes to Disk.</li>
 		          </ul>
 		        </div>
 		        <div class="modal-footer">

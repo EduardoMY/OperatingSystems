@@ -283,14 +283,14 @@ function algorithmLogic(newProcess){
 		//from running to finished
 		tProcess=running_Finished();
 
+		//from running to Waiting Disk
+		tWDProcess=running_WaitingDisk();
+
 		//from running to ready
 		tRProcess=running_Ready();
 
 		//from running to Waiting Printer
 		tWProcess=running_Waiting();
-
-		//from running to Waiting Disk
-		tWDProcess=running_WaitingDisk();
 
 		//from IO Printer to ready
 		tIOProcess=io_Ready();
@@ -859,6 +859,7 @@ function loadToRAM(process){
 }
 
 function makeSwap(process) {
+	//
 	if(tap.isRamFull())
 		changingTwoPages(process);
 	else changingOnePage(process);
@@ -872,11 +873,13 @@ function changingTwoPages(process){
 	if(data[3]===-1){
 		loadToGrid(data);
 		loadToTap(process);
+		loadToTap(pcb.Find(data[5]));
 		addRowFileSwap(data[4]);
 	}
 	else{
 		loadToGrid(data);
 		loadToTap(process);
+		loadToTap(pcb.Find(data[5]));
 		deleteRowFileSwap(data[3]);
 		addRowFileSwap(data[4]);
 	}
@@ -940,6 +943,7 @@ function deleteFromSwap(indexes){
 	for (var i = indexes.length - 1; i >= 0; i--) {
 		swapTable.deleteRow(indexes[i]);
 	};
+
 }
 
 function deleteFromTAP(index){
@@ -975,10 +979,12 @@ function loadToGrid(data){
 
 function loadToTap(process){
 	var data, index;
-	index=tap.getIndex(process);
-	index++;
-	data=tap.getInformation(process);
-	updateTAP(index, data);	
+	if(process!==null){
+		index=tap.getIndex(process);
+		index++;
+		data=tap.getInformation(process);
+		updateTAP(index, data);
+	}	
 }
 
 function updateTAP(index, data){

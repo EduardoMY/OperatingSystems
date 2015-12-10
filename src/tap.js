@@ -86,6 +86,7 @@ class TAP{
 					data.push("P0"+process.id+"-"+process.getActivePage().id);
 					data.push(positionSwap+1);
 					data.push("P0"+sPage.processID+"-"+sPage.id);
+					data.push(sPage.processID);
 				}
 				else { //A page to grid and the old page to file
 					positionRam = this.ramGrid.indexOf(null); //Gets the position of the process
@@ -100,6 +101,7 @@ class TAP{
 					data.push("P0"+process.id+"-"+process.getActivePage().id);
 					data.push(-1);
 					data.push("P0"+sPage.processID+"-"+sPage.id);
+					data.push(sPage.processID);
 				}
 			}
 			return data;
