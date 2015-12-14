@@ -609,6 +609,9 @@ function updateLists(){
 		data=tap.getInformation(process);
 		updateTAP(index, data);	
 	}
+	if(runningList.isEmpty() || runningList.isBlocked){
+		paintLastActivePage();	
+	}
 	runningList.isBlocked=false;
 }
 
