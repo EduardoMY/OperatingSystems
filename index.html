@@ -58,7 +58,7 @@
 	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
 	  <div class="container">
 			
-		      <p class="navbar-text">Clock counter <span class="label label-primary lbl-big" id="timer">0</span>	</p>
+		      <p class="navbar-text">Clock counter<span class="label label-primary lbl-big" id="timer">0</span>	</p>
 		      <p class="navbar-text">Quantum <span class="label label-primary lbl-big" id="quantumNumber">0</span>	</p>
 			<div class="btn-group" role="group" aria-label="...">
 	  			<button type="button" class="btn btn-default navbar-btn" onclick="playFunction()">
@@ -89,15 +89,21 @@
 		        <p> Welcome to Maniac OS. This is an amazing Operating System which is capable of handling more than one scheduling algorithm. Moreover, you can even change the size of lists, probability to create a new process, and more! In order for you to understand it a little bit better, you have this helpful section.</p>
 		         <h3>Parameters values</h3>
 		          <ul>
-		          	<li> Probability: [0, 100]</li>
-		          	<li> Quantum: [2, 100]</li>
-		          	<li> Average CPU: [1, 100]</li>
-		          	<li> Average IO: [1,100]</li>
-		          	<li> Hold, ready, waiting: [1, 50]</li>
-		          	<li> Speediness: Slow (4s), Normal (1s) y Fast (1/10s)</li>
-		          	<li> Algorithm: First Come, First Served  and Round-Robin</li>
-		          	<li> </li>
-		          	<li> </li>
+		          	<li> <strong>Probability:</strong> [0, 100]</li>
+		          	<li> <strong>Probability to change Page of a single Process:</strong> [0, 100] </li>
+		          	<li> <strong>Probability of a process to need IO:</strong> [0,100]</li>
+		          	<li> <strong>Quantum:</strong> [2, 100]</li>
+		          	<li> <strong>Average CPU (nedded):</strong> [1, 100]</li>
+		          	<li> <strong>Average IO (nedded):</strong>[1,100]</li>
+		          	<li> <strong>Average Disk (nedded):</strong> [1,100]</li>
+		          	<li> <strong>Frame Size: </strong>[The amount given]
+		          	</li>
+		          	<li> <strong>Ram Size:</strong> [The amount given] It changes according to the Frame Size.
+		          	</li>
+		          	<li> <strong>Hold, ready, waiting, waiting for disk:</strong> [1, 50]</li>
+		          	<li> <strong>Speediness:</strong> Slow (2s), Normal (1.5s) y Fast (1/10s)</li>
+		          	<li> <strong>Algorithm:</strong> First Come, First Served  and Round-Robin</li>
+		          	<li> <strong>Paging Algorithm:</strong> Oldest, least used</li>
 		          </ul>
 		          <h3> Rules </h3>
 		          <ul>
@@ -108,17 +114,29 @@
 		          </ul>
 		          <h3> PCB Elements</h3>
 		          <ul>
-			          <li> ID: </li>
-			          <li> Arrival: </li>
-			          <li> CPU Nedded: </li>
-			          <li> CPU Ussage </li>
-			          <li> IO Time: </li>
-			          <li> </li>
+			          <li> <strong>ID:</strong> The corresponding Process' ID. </li>
+			          <li> <strong>Arrival:</strong> The clock tick the process was done.</li>
+			          <li> <strong>CPU Nedded:</strong> The amount of time it needs in Running.</li>
+			          <li> <strong>CPU Ussage:</strong> The amount of process it has accumulated. </li>
+			          <li> <strong>Size:</strong> The amount of Kb's the whole process needs. </li>
+			          <li> <strong>Frames:</strong> Amount of frame it needs according to the paramaters.</li>
+			          <li> <strong>Printer Time Nedded:</strong> Time it needs to be processed by Printer </li>
+			          <li> <strong>Time of Printer:</strong> Time in printer it has accumulated. </li>
+			          <li> <strong>Arrival to Printer:</strong> Clock tick of the process it should arrived to Printer</li>
+			          <li> <strong>Waiting Time:</strong> Time waiting....</li>
+			          <li> <strong>System Time:</strong> Total time the process was in System</li>
+			          <li> <strong>Finish Time:</strong> Last clock tick in System</li>
+			          <li> <strong>Efficiency:</strong> WaitingTime/TotalTime</li>
+			          <li> <strong>Status:</strong> [In System, Finished, Aborted]</li>
 		          </ul>
 		          <h3> TAP Structure </h3>
 		          <ul>
+		          <li> The tap number + L means the location (RAM, Disk or Not Loaded)
+		          <li> U means the amount of cpu time it has accumulated.</li>
+		          <li> T means the time that page was loaded to Ram, it will turn 0 again if it goes to Disk.</li>
 		          </ul>
-		        </div>
+		          <h3> Suggestions </h3>
+		        </div> 
 		        <div class="modal-footer">
 		          <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
 		        </div>
@@ -165,8 +183,8 @@
 			<p> <h4> Speediness </h4> </p>
 				<div class="btn-group" role="group" aria-label="...">
 				  <button type="button" class="btn btn-default" onclick="slow()" id="slow">Slow</button>
-				  <button type="button" class="btn btn-default" onclick="normal()" id="normal">Normal</button>
-				  <button type="button" class="btn btn-success" onclick="fast()" id="fast">Fast</button>
+				  <button type="button" class="btn btn-success" onclick="normal()" id="normal">Normal</button>
+				  <button type="button" class="btn btn-default" onclick="fast()" id="fast">Fast</button>
 				</div>
 			<p> <h4> Processes Algorithm </h4> </p>
 				<div class="btn-group" role="group" aria-label="...">

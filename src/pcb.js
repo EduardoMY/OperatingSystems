@@ -26,4 +26,17 @@ class PCB {
 		}
 		return actions;
 	}
+
+	Find(id){
+		var p=null;
+		var position=-1;
+		for (var i = this.processes.length - 1; i >= 0; i--) {
+			if(this.processes[i].id==id)
+				position=i;
+		};
+
+		if(position!==-1)
+			p=this.processes[position];
+		return p;
+	}
 } 

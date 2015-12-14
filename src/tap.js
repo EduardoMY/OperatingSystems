@@ -17,53 +17,119 @@ class TAP{
 	//Two things, 
 	Add(Process, time){ 
 		var squareToAdd=[];
+		var position=this.findEmptySlot() 
+		var realPositionInGrid = this.transformPositionToIndex(position);
 		//if(this.collection.indexOf())
 		this.collection.push(Process);
-		Process.getActivePage().location=1;
-		Process.getActivePage().time=time;
-		this.ramGrid[this.findEmptySlot()]=Process.getActivePage();
-		squareToAdd.push(this.transformPositionToIndex(this.length));
+		Process.getActivePage().Place=1;
+		Process.getActivePage().exactLocation = this.getCoordenates(realPositionInGrid);
+		Process.getActivePage().Time=time;
+		this.ramGrid[position]=Process.getActivePage();
+		squareToAdd.push(realPositionInGrid);
 		squareToAdd.push(this.squaresPerPage);
-		squareToAdd.push("P0 " + Process.id+"-"+Process.getActivePage().id);
+		squareToAdd.push("P0" + Process.id+"-"+Process.getActivePage().id);
 		this.length++;
 		return squareToAdd;
 	}
 
-	Swap(process){
+	Swap(process, algorithm, time){
 		//Dont forget to update the locations,
-		//{indexRG, squares, swapFrom, locationSwap}
-			if(isRamFull()){ //If it will be a one swap
+		//{indexGrid, squares,title ,deletesFromSwap }
+		var data=[];
+		var sPage;
+		var index;
+		var positionRam;
+		var realPositionInGrid;
+		var positionSwap;
 
-				if(this.ramGrid.indexOf(process.getActivePage())!==-1){ //A simple
-
+		positionSwap=this.fileSwap.indexOf(process.getActivePage());
+		
+			if(!this.isRamFull()){ //If it will be a one swap
+				if (positionSwap!==-1){ //Page in Swap
+					positionRam=this.findEmptySlot();
+					realPositionInGrid = this.transformPositionToIndex(positionRam);
+					this.fileSwap.splice(positionSwap,1); //Deletes the item from Swap
+					this.ramGrid[positionRam]=process.getActivePage(); //Loads the item to Ram again
+					process.getActivePage().Place=1;
+					process.getActivePage().Time=time;
+					process.getActivePage().exactLocation = this.getCoordenates(realPositionInGrid);
+					data.push(realPositionInGrid);//
+					data.push(this.squaresPerPage);//
+					data.push("P0"+process.id+"-"+process.getActivePage().id);
+					data.push(positionSwap+1);
+					this.length++;
 				}
-				else if (this.fileSwap.indexOf(process.getActivePage())!==-1)){ //
-
-				}
-				else {
-
+				else { //Page not loaded... yet
+					//console.log("Aqui");
+					positionRam=this.findEmptySlot();
+					//console.log(positionRam);
+					realPositionInGrid=this.transformPositionToIndex(positionRam);
+					this.ramGrid[positionRam]=process.getActivePage(); //Loads the item to Ram again
+					process.getActivePage().Place=1;
+					process.getActivePage().exactLocation = this.getCoordenates(realPositionInGrid);
+					process.getActivePage().Time=time;
+					data.push(realPositionInGrid);//
+					data.push(this.squaresPerPage);//
+					data.push("P0"+process.id+"-"+process.getActivePage().id);
+					data.push(-1);
+					this.length++;
 				}
 			}
 			else { //A two way swap
-				if(this.ramGrid.indexOf(process.getActivePage())===-1){
 
-				}
-				else if (this.fileSwap.indexOf(process.getActivePage())!==-1)){
+				if(algorithm===1)
+					sPage=this.getOldest();
+				else 
+					sPage=this.getLeastUsed();
 
+				if (positionSwap !== -1){ //Two way swapping, a page from grid to file and viceversa
+
+					positionRam = this.ramGrid.indexOf(null); //Gets the position of the process
+					realPositionInGrid=this.transformPositionToIndex(positionRam);
+					this.fileSwap.splice(positionSwap, 1); //Deletes the item from Swap
+					this.ramGrid[positionRam] = process.getActivePage(); //Loads the item to Ram again
+					this.fileSwap.push(sPage); //Loads the content from Ram to Files
+					process.getActivePage().Place = 1; //Changes location
+					process.getActivePage().exactLocation = this.getCoordenates(realPositionInGrid);
+					process.getActivePage().Time=time;
+					sPage.Place = 2; //Changes location
+					sPage.Time=0;
+					data.push(realPositionInGrid); //
+					data.push(this.squaresPerPage); //
+					data.push("P0"+process.id+"-"+process.getActivePage().id);
+					data.push(positionSwap+1);
+					data.push("P0"+sPage.processID+"-"+sPage.id);
+					data.push(sPage.processID);
 				}
-				else {
-					
+				else { //A page to grid and the old page to file
+					positionRam = this.ramGrid.indexOf(null); //Gets the position of the process
+					realPositionInGrid=this.transformPositionToIndex(positionRam);
+					this.ramGrid[positionRam] = process.getActivePage(); //Loads the item to Ram again
+					this.fileSwap.push(sPage); //Loads the content from Ram to Files
+					process.getActivePage().Place = 1; //Changes location
+					process.getActivePage().exactLocation = this.getCoordenates(realPositionInGrid);
+					process.getActivePage().Time = time;
+					sPage.Place = 2; //Changes location
+					sPage.Time=0;
+					data.push(realPositionInGrid); //
+					data.push(this.squaresPerPage); //
+					data.push("P0"+process.id+"-"+process.getActivePage().id);
+					data.push(-1);
+					data.push("P0"+sPage.processID+"-"+sPage.id);
+					data.push(sPage.processID);
 				}
 			}
+			return data;
 	}
 
 	changeRamSize(){
 
 	}
 
-	isSwappingNedded(){
-		return this.ramGrid.indexOf(this.activeProcess.getActivePage())===-1 ;
+	isSwappingNedded(activeProcess){
+		return this.ramGrid.indexOf(activeProcess.getActivePage())===-1 ;
 	}
+
 	setActiveProcess(Process){
 		this.activeProcess=Process;
 	}
@@ -92,7 +158,7 @@ class TAP{
 	}
 
 	isRamFull(){
-		return this.maxNumberOfPages===this.length;
+		return this.totalNumberOfPages===this.length;
 	}
 
 	Delete(process){
@@ -119,7 +185,7 @@ class TAP{
 	DeleteFromSwap(process){
 		var indexes=[];
 		for (var i = this.fileSwap.length - 1; i >= 0; i--) {
-			if(this.fileSwap[i].processID===process.id){
+			if(this.fileSwap[i].processID==process.id){
 				this.fileSwap.splice(i, 1);
 				indexes.push(i+1);
 			}
@@ -143,36 +209,45 @@ class TAP{
 	}
 
 	getOldest(){
-		return getRequiredPage("time");
+		return this.getRequiredPage("Time");
 	}
 
 	getLeastUsed(){
-		return getRequiredPage("use")
+		return this.getRequiredPage("use")
 	}
 
 	getRequiredPage(variable){
 		var page;
-		var position=-1, leastSomething=0;
+		var position=-1, leastSomething=-1;
 		for (var i = this.ramGrid.length - 1; i >= 0; i--) {
-			if(this.ramGrid[i]!==null && this.ramGrid[i][variable] <= leastSomething 
-					&& this.ramGrid[i].processID!==this.activeProcess.id){
-				leastSomething=this.ramGrid[i][variable];
-				position=i;
+			if(this.ramGrid[i]!==null && this.ramGrid[i]!=="SO"){
+				if(leastSomething===-1 ||(this.ramGrid[i][variable] <= leastSomething 
+					&& this.ramGrid[i].processID!==this.activeProcess.id)){
+					leastSomething=this.ramGrid[i][variable];
+					position=i;					
+				}
+
 			}
 		};
 		if(position===-1)
 			page=null;
 		else {
-			page=ramGrid[position];//ramGrid.splice(position, 1);
-			ramGrid[position]=null;
+			page=this.ramGrid[position];//ramGrid.splice(position, 1);
+			this.ramGrid[position]=null;
 		}
 		return page;
 	}
 
 	getInformation(process){
 		return process.PrintRam();
-
 	}
+
+	getCoordenates(index){
+		var letters =['A','B','C', 'D', 'E', 'F', 'G', 'H'];
+		var realPositionInGrid = index;
+		return letters[(realPositionInGrid-1)%8] + (Math.floor((realPositionInGrid) / 8)+1); 
+	}
+
 	transformPositionToIndex(index){
 		return index*this.squaresPerPage+1
 	}
