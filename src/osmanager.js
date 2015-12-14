@@ -1,46 +1,41 @@
-	var time=0; //Clock counter
-	var processesNumber=1; //Number of processes been created
-	var mode=0; //1=play, 2=pause, 3=stop
-	var fastness=1; //1=fast, 2=normal, 3=slow
-	var quantum=0; //The quantum of the machine
-	var probability=0; //The probability to create a process
-	var printerProbability=0; //The probability of a process to require IO
-	var switchingPageProbability=0; //
-	var averageIOTime=0; //
-	var averageCPUTime=0; //
-	var averageDiskTime=0; //
-	var memorySize=0; //
-	var frameSize=0; //
-	var holdSize=0, //
-		readySize=0, // 
-		waitingPrinterSize=0, //
-		waitingDiskSize=0; //
-	var algorithm=1; //1=round robin, 2=fcfs
-	var swapAlgorithm=1; //1=Oldest, 2=least used
-	var fastValues=[100,1500,2000]; //Fast, normal, slow times intervals
-	var myVarTime =null; //Stores the timers
-	var holdList = null; //
-	var readyList = null; //
-	var runningList = null; //
-	var waitingPrinterList = null; //
-	var waitingDiskList = null;
-	var ioList = null; //
-	var diskList = null; //
-	var pcb = null; //
-	var tap=null;//
-	var OS=null;
-	var crucialState = false; //Seems good
-	var activePage=[];
+var time=0; //Clock counter
+var processesNumber=1; //Number of processes been created
+var mode = 0; //1=play, 2=pause, 3=stop
+var fastness = 2; //1=fast, 2=normal, 3=slow
+var quantum = 0; //The quantum of the machine
+var probability = 0; //The probability to create a process
+var printerProbability = 0; //The probability of a process to require IO
+var switchingPageProbability = 0; //
+var averageIOTime = 0; //
+var averageCPUTime = 0; //
+var averageDiskTime = 0; //
+var memorySize = 0; //
+var frameSize = 0; //
+var holdSize = 0, //
+	readySize = 0, // 
+	waitingPrinterSize = 0, //
+	waitingDiskSize = 0; //
+var algorithm = 1; //1=round robin, 2=fcfs
+var swapAlgorithm = 1; //1=Oldest, 2=least used
+var fastValues=[100,1500,2000]; //Fast, normal, slow times intervals
+var myVarTime =null; //Stores the timers
+var holdList = null; //
+var readyList = null; //
+var runningList = null; //
+var waitingPrinterList = null; //
+var waitingDiskList = null;
+var ioList = null; //
+var diskList = null; //
+var pcb = null; //
+var tap = null;//
+var swapNow = false; //Seems good
+var activeTapCell=null;
 
 function myTimer() {
 	if(mode===0 || mode===2 || mode===3)
 		return;
 	simulation();
 }
-
-/*
-
-*/
 
 function validateValues(){
 	var isCorrect=true;
@@ -163,11 +158,13 @@ function getCPUTime(){
 
 function getIOTime(){
 		var df = Math.floor(Math.random() * averageIOTime / 4);
-		var multiplier, ioNumber;
-
+		var multiplier, ioNumber=0;
+		var localProbability;
 		//To decide if the process will use the IO or not.
-		if(Math.floor(Math.random() * 100)+1<=printerProbability)
+		localProbability = Math.floor(Math.random()  * 100) + 1;
+		if( localProbability > printerProbability){
 			return 0;
+		}
 
 		if(Math.random() < 0.5)
 			multiplier=-1;
@@ -184,16 +181,16 @@ function getIOTime(){
 }
 
 function getDiskTime(){
-	var df = Math.floor(Math.random() * averageIOTime / 4);
+	var df = Math.floor(Math.random() * averageDiskTime / 4);
 	var multiplier, diskNumber;
 
 	if(Math.random() < 0.5)
 		multiplier=-1;
 	else multiplier=1;
 		
-	diskNumber = averageIOTime + df * multiplier;
+	diskNumber = averageDiskTime + df * multiplier;
 	if(diskNumber<=0)
-		diskNumber = averageIOTime - df * multiplier;
+		diskNumber = averageDiskTime - df * multiplier;
 
 	if(diskNumber<=0)
 		return 1;
@@ -272,6 +269,8 @@ function algorithmLogic(newProcess){
 		var	tDProcess=null;
 		var	tWDProcess=null;
 
+		var canMoveToRunning=true;
+
 		/* Table of actions (in order):
 			Free CPU
 			Free Printer
@@ -283,14 +282,19 @@ function algorithmLogic(newProcess){
 		//from running to finished
 		tProcess=running_Finished();
 
-		//from running to Waiting Disk
-		tWDProcess=running_WaitingDisk();
+		//from running to Waiting Printer
+		tWProcess=running_Waiting();
+		
+		if(readyList.isEmpty())
+			canMoveToRunning=false;
 
 		//from running to ready
 		tRProcess=running_Ready();
 
-		//from running to Waiting Printer
-		tWProcess=running_Waiting();
+		//if(read)
+		
+		//from running to Waiting Disk
+		tWDProcess=running_WaitingDisk();
 
 		//from IO Printer to ready
 		tIOProcess=io_Ready();
@@ -308,8 +312,9 @@ function algorithmLogic(newProcess){
 			//from Waiting Disk to Disk
 			waitingDisk_Disk();
 
-			//from ready to running
-			ready_Running();
+			if(canMoveToRunning)
+				//from ready to running
+				ready_Running();
 
 			//from new to ready
 			while(hrWorked)	//While to move more than one process per tick
@@ -354,15 +359,6 @@ function algorithmLogic(newProcess){
 		}
 }
 
-function checkSystemState(){
-	var processesSum = waitingPrinterSize + readySize;
-	var actualProcessesSum = waitingPrinterList.length + readyList.length;
-	if(waitingPrinterList.length > waitingPrinterSize*.6 || readyList.length > readySize*.6)
-		crucialState=true;
-	else if(waitingPrinterList.length < waitingPrinterSize*.6 && readyList.length < readySize*.6)
-		crucialState=false;
-}
-
 function running_Finished(){
 	var dProcess=null;
 	if(!runningList.isEmpty() && runningList.Top().isDone()){
@@ -377,16 +373,19 @@ function running_Finished(){
 
 function running_Ready(){
 		var eProcess=null, tProcess=null;
-
+		//alert(quantum);
 		if(!runningList.isEmpty() && quantum!==-1 && runningList.Top().cpuCounter>=quantum){
 			
 			if(!readyList.isFull()){
+				if(readyList.isEmpty())
+					runningList.isBlocked=true;
 				eProcess = runningList.Remove();
 				eProcess.cpuCounter=0;
 				deleteFirstRow("running");
 				readyList.Push(eProcess);
 				addRowsEnd("ready", eProcess);
 				paintLastActivePage();
+
 			}
 
 			//from running to finished, in case 
@@ -431,14 +430,16 @@ function running_Waiting(){
 
 function ready_Running(){
 	var eProcess=null;
-		if(!readyList.isEmpty() && !runningList.isFull()){
+		if(!readyList.isEmpty() && !runningList.isFull() && !runningList.isBlocked){
 			eProcess=readyList.Remove();
 			tap.setActiveProcess(eProcess);
 			runningList.Push(eProcess);
 			deleteFirstRow("ready");
 			addRowsEnd("running", eProcess);
-			if(tap.getRamIndex(eProcess)[0]<=0 )
+			if(runningList.Top().getActivePage.Place!==1){
 				runningList.isBlocked=true;
+				swapNow=true;
+			}
 			else 
 				paintActivePage(eProcess);
 		}
@@ -460,7 +461,7 @@ function io_Ready(){
 	var eProcess=null, dProcess=null;
 
 	if(!ioList.isEmpty())
-		if(ioList.Top().ioTime>=ioList.Top().ioTimeNedded){
+		if(ioList.Top().ioTime===ioList.Top().ioTimeNedded){
 			if(readyList.isFull()){
 				dProcess=ioList.Remove();
 				deleteFirstRow("ioprinter");
@@ -484,10 +485,10 @@ function running_WaitingDisk(){
 	var isSwappingNedded=false;
 
 		if(!runningList.isEmpty()){
-			if(runningList.isBlocked==true){
+			if(swapNow){
 				wasPageChanged=true;
 				isSwappingNedded=tap.isSwappingNedded(runningList.Top());
-				runningList.isBlocked=false;
+				swapNow=false;
 			}
 			else if(actualProbability<switchingPageProbability){
 					//paintActivePage(runningList.Top(), false);
@@ -586,8 +587,10 @@ function updateLists(){
 
 	holdList.UpdateProcess("waitingTime");
 	readyList.UpdateProcess("waitingTime");
-	runningList.UpdateProcess("cpuTime");
-	runningList.UpdateProcess("cpuCounter");
+	if(!runningList.isBlocked){ //indicates if the corresponding page is in RAM or not
+		runningList.UpdateProcess("cpuTime");
+		runningList.UpdateProcess("cpuCounter");
+	}
 	waitingPrinterList.UpdateProcess("waitingTime");
 	waitingDiskList.UpdateProcess("waitingTime");
 	
@@ -599,13 +602,14 @@ function updateLists(){
 	ioList.UpdateProcess("ioTime");
 	diskList.UpdateProcess("diskTime");
 	
-	if(!runningList.isEmpty()){
+	if(!runningList.isEmpty() && !runningList.isBlocked){
 		process=runningList.Top();
 		process.getActivePage().use++;
 		index=tap.getIndex(process)+1;
 		data=tap.getInformation(process);
-		updateTAP(index, data)	
+		updateTAP(index, data);	
 	}
+	runningList.isBlocked=false;
 }
 
 
@@ -714,10 +718,12 @@ function clearAllTables(){
 	clearSingleTable(finishedTable);
 	clearSingleTable(waitingTable);
 	clearSingleTable(waitingDiskTable);
+	clearSingleTable(diskTable);
 	clearSingleTable(ioTable);
 	clearSingleTable(pcbTable);
 	startGrip(false);//clearSingleTable(ramTable); 
 	clearSingleTable(swapTable);
+
 	for (var i = 1; i <=8 ; i++) {
 		tapTable=document.getElementById("tap"+i);
 		clearSingleTable(tapTable);
@@ -887,9 +893,8 @@ function changingTwoPages(process){
 
 //
 function changingOnePage(process){
-	var data;
-	data=tap.Swap(process, swapAlgorithm, time);
-
+	var data=tap.Swap(process, swapAlgorithm, time);
+	//console.log('OnePage');
 	if(data[3]===-1){
 		loadToGrid(data);
 		loadToTap(process);
@@ -990,6 +995,7 @@ function loadToTap(process){
 function updateTAP(index, data){
 	var tapTable, currentRow, currentCells, total=1;
 	tapTable=document.getElementById("tap1");
+	
 	if(index<tapTable.rows.length){
 		for(var c=1; c<=8; c++){
 			tapTable=document.getElementById("tap"+c);
@@ -1038,7 +1044,8 @@ function paintActivePage(activeProcess){
 	tapTable=document.getElementById("tap"+tapNumber);
 	rows=gridTable.rows;
 	color="#41F34A";//"#C8C8C8";
-	
+
+	paintLastActivePage(data[1]);
 	if(data[0]>0){ //Validates de Data
 
 			//Paints all the pages in RAM Grid
@@ -1050,51 +1057,44 @@ function paintActivePage(activeProcess){
 						count++;
 					}
 				};
+
+
 			};
 
 			//Paints the page in TAP
 			tapTable.rows[index].cells[indexCell].style.backgroundColor=color;
-			data.push(tapNumber);
-			data.push(index);
-			data.push(indexCell);
-			activePage=data;
+
+			activeTapCell=tapTable.rows[index].cells[indexCell];	
 		} 
 }
 
 function paintLastActivePage(){
-	var gridTable=document.getElementById("ramgrid");
-	var tapTable;
 	var color;
-	var data=activePage;
-	var rc=indexToCoordinates(data[0]);
-	var cells, rows;
-	var count=0;
-	var tapId=0;
-	var tapPageId=0;
-
-	tapTable=document.getElementById("tap"+data[2]);
-	rows=gridTable.rows;
 
 	color="#FFFFFF";
-	
-	if(data[0]>0){
-			//Paints all the pages in RAM Grid
-			for (var i = rc[0]; i <= rows.length - 1 && count!==data[1]; i++) {
-				cells=rows[i].cells;
-				for (var c = 1; c <= rows.length-1 && count!==data[1]; c++) {
-					if(rc[0] < i || rc[1]<=c){
-						cells[c].style.backgroundColor=color;
-						count++;
-					}
-				};
-			};
-			//Paints the page in TAP
-			tapTable.rows[data[3]].cells[data[4]].style.backgroundColor=color;
-		} 
+
+	if(activeTapCell!==null){
+		activeTapCell.style.backgroundColor=color;
+		clearGridColor(color);
+	}
+}
+
+function clearGridColor(color){
+	var gridTable=document.getElementById("ramgrid");
+	var cells, rows;
+	var slots= memorySize/4;
+	rows=gridTable.rows;
+		for (var i = 1; i <= rows.length - 1; i++) {
+		cells=rows[i].cells;
+		for (var c = 1; c <= rows.length-1; c++) {
+				cells[c].style.backgroundColor=color;
+				if((i-1)*8+c>slots)
+					cells[c].style.backgroundColor="#C8C8C8";
+		};
+	};
 }
 
 function indexToCoordinates(index){
-
 	var coor=[];
 	coor.push(Math.floor(index/8)+1); //r
 	coor.push(index%8);  //c
@@ -1122,7 +1122,8 @@ function startGrip(firstTime){//pcbRows[id].cells;
 			for (var i = 1; i <= rows.length - 1; i++) {
 				row=rows[i];
 				for (var c = 1; c <= rows.length-1; c++) {
-					cell=row.deleteCell(-1);
+					if(row.cells.length!=1)
+						cell=row.deleteCell(-1);
 				};
 		};
 	}
